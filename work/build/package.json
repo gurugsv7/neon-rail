@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "fbx2gltf": "^0.9.7-p1",
+    "meshoptimizer": "^1.2.0",
+    "sharp": "^0.35.4",
+    "three": "^0.185.1"
+  }
+}

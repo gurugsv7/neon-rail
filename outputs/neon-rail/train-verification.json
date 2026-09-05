@@ -1,0 +1,240 @@
+{
+  "results": [
+    {
+      "test": "Incoming train keeps moving beyond old displacement cap",
+      "passed": true,
+      "detail": [
+        {
+          "world": 36.000000000000085,
+          "relative": 27.49776429260948,
+          "warned": true
+        },
+        {
+          "world": 27.00000000000017,
+          "relative": 9.984747566177301,
+          "warned": true
+        },
+        {
+          "world": 18.000000000000256,
+          "relative": -7.5446162830105585,
+          "warned": true
+        },
+        {
+          "world": 9.000000000000258,
+          "relative": -25.092965754889867,
+          "warned": true
+        }
+      ]
+    },
+    {
+      "test": "Incoming train travels past the player",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Incoming train is warned before encounter",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Incoming train recycles after passing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 17m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 17m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 17m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 30m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 30m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear train at 30m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 17m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 17m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 17m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 30m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 30m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear approach at 30m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 17m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 17m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 17m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 30m/s, timing 0.35s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 30m/s, timing 0.5s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Ground jump cannot clear depart at 30m/s, timing 0.7s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Extended access ramp reaches full-height roof",
+      "passed": true,
+      "detail": {
+        "lane": 1,
+        "x": 0,
+        "y": 4.27,
+        "vy": 0,
+        "grounded": true,
+        "slide": 0,
+        "invincible": 0,
+        "stumble": 0,
+        "land": 0,
+        "surface": 4.27,
+        "fall": 0,
+        "lean": 0
+      }
+    },
+    {
+      "test": "Jump still works from roof elevation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Airborne lane change and landing from tall train",
+      "passed": true,
+      "detail": {
+        "lane": 2,
+        "x": 3.2499999996664886,
+        "y": 0,
+        "vy": 0,
+        "grounded": true,
+        "slide": 0,
+        "invincible": 0,
+        "stumble": 0,
+        "land": 0.6333333333333334,
+        "surface": 0,
+        "fall": 0,
+        "lean": -1.7888213765452546e-06
+      }
+    },
+    {
+      "test": "Normal lane dodge clears tall train",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "shield protects against moving train",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "board protects against moving train",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Low obstacles remain jumpable",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "Slide collision unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "test": "12-minute unprotected route, seed 1",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "hits": 0,
+        "distance": 20780.844022636564,
+        "patterns": 267,
+        "events": []
+      }
+    },
+    {
+      "test": "12-minute unprotected route, seed 99",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "hits": 0,
+        "distance": 20780.844022636564,
+        "patterns": 266,
+        "events": []
+      }
+    },
+    {
+      "test": "12-minute unprotected route, seed 2026",
+      "passed": true,
+      "detail": {
+        "state": "playing",
+        "hits": 0,
+        "distance": 20780.844022636564,
+        "patterns": 267,
+        "events": []
+      }
+    },
+    {
+      "test": "No browser errors after train changes",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "errors": []
+}

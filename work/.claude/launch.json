@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "neon-rail",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["build/serve.mjs"],
+      "port": 8127
+    }
+  ]
+}

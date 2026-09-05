@@ -1,0 +1,5 @@
+# The game is one self-contained HTML with base64 payloads inlined; keep git
+# from rewriting its line endings on checkout.
+*.html -text
+*.glb binary
+*.png binary

@@ -1,0 +1,10 @@
+import {build} from 'esbuild';
+import {readFileSync,writeFileSync,mkdirSync,copyFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+const root=resolve('outputs/neon-rail');
+const result=await build({entryPoints:[root+'/src/game.js'],bundle:true,write:false,minify:true,format:'iife',loader:{'.glb':'base64'},target:['chrome110','edge110','firefox115'],nodePaths:[resolve('work/build/node_modules')],legalComments:'eof'});
+let shell=readFileSync(root+'/src/shell.html','utf8');
+shell=shell.replace('/*INLINE_CSS*/',readFileSync(root+'/src/style.css','utf8')).replace('/*INLINE_JS*/',()=>result.outputFiles[0].text.replaceAll('</script','<\\/script'));
+writeFileSync(root+'/NEON RAIL.html',shell);
+copyFileSync('work/build/node_modules/three/LICENSE',root+'/THREE-LICENSE.txt');
+console.log('Built offline game:',root+'/NEON RAIL.html',Math.round(shell.length/1024)+' KB');

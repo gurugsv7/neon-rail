@@ -1,0 +1,26 @@
+# Dependencies and tool binaries
+work/build/node_modules/
+work/npm-cache/
+__pycache__/
+
+# Source art. All of it is third-party and re-downloadable, and together it is
+# ~270MB of binaries that would sit in git history forever. The packed results
+# live in outputs/neon-rail/assets and the scripts in work/build rebuild them.
+#   Kenney kits (CC0)            https://kenney.nl/assets
+#   Quaternius stylized trees    https://quaternius.com
+#   Meshy + Mixamo exports       supplied per-project
+work/main character/
+work/kenney_*/
+work/Textured Stylized Trees*/
+work/*.glb
+work/build/fbx-out/
+work/build/viewer/
+
+# Test and screenshot output
+work/*.png
+work/*.log
+work/*.json
+outputs/neon-rail/preview.png
+
+# Stale build artifact; the single-file HTML is the deliverable
+outputs/*.zip
