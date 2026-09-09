@@ -81,6 +81,22 @@ SUITE = r"""
   for(let i=0;i<20;i++){out=sig.update(null,t);t+=STEP;}   // ~1.7s with no face
   ok('losing the face reports tracking lost', out.tracking===false, {tracking:out.tracking});
 
+  // ---- preview overlay ---------------------------------------------------
+  // The box is drawn on a MIRRORED self-view, and head.x is already mirrored,
+  // so the box must sit at head.x directly. Flipping again put it on the
+  // opposite side of the player's face from the player.
+  const mk=(x)=>({x, y:0.5, unit:0.2});
+  const bL=__rail.previewBox(mk(0.2),160,120);
+  const bC=__rail.previewBox(mk(0.5),160,120);
+  const bR=__rail.previewBox(mk(0.8),160,120);
+  const mid=b=>b.x+b.w/2;
+  ok('overlay: box follows head.x, not its mirror', Math.abs(mid(bL)-0.2*160)<0.5, {centre:mid(bL),expected:32});
+  ok('overlay: centred head gives a centred box', Math.abs(mid(bC)-80)<0.5, {centre:mid(bC)});
+  ok('overlay: box moves the same way as the face', mid(bL)<mid(bC) && mid(bC)<mid(bR),
+     {left:mid(bL),centre:mid(bC),right:mid(bR)});
+  ok('overlay: box is sized from head width', Math.abs(bC.w-0.2*160)<0.5, {w:bC.w});
+  ok('overlay: no head means no box', __rail.previewBox(null,160,120)===null);
+
   return results;
 }
 """

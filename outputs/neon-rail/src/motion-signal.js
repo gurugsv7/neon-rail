@@ -47,6 +47,19 @@ export function normaliseHead(box,width,height){
   };
 }
 
+// Where to draw the tracking box on the mirrored self-view.
+//
+// head.x is ALREADY mirrored -- it is the position as the player sees
+// themselves -- and the preview draws the video mirrored too, so the box goes
+// straight at head.x. Flipping it again here put the box on the opposite side
+// of the face from the player, which reads as broken tracking even though the
+// steering underneath was correct.
+export function previewBox(head,width,height){
+  if(!head)return null;
+  const size=head.unit*width;
+  return {x:head.x*width-size/2, y:head.y*height-size*.6, w:size, h:size*1.2};
+}
+
 export const MOTION_TUNING={
   // Fractions of the scale unit (head width), measured from the calibrated centre.
   enter:.32,exit:.20,        // entering a lane needs a bigger lean than holding it

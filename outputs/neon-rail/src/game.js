@@ -5,7 +5,7 @@ import {prepareTrainAsset} from './train-asset.js';
 import {prepareCharacterAsset,characterModel} from './character-asset.js';
 import {createMotionControl} from './motion-control.js';
 import {prepareTracker,requestHead} from './motion-tracker.js';
-import {createMotionSignal,normaliseHead} from './motion-signal.js';
+import {createMotionSignal,normaliseHead,previewBox} from './motion-signal.js';
 
 import {prepareCityBuildingAsset} from './city-buildings-asset.js';
 import {prepareRailAsset} from './rail-asset.js';
@@ -140,8 +140,8 @@ class Game{
       // Mirrored, so the preview behaves like a mirror and matches the control.
       paint.save();paint.translate(160,0);paint.scale(-1,1);
       paint.drawImage(control.video,0,0,160,120);paint.restore();
-      if(head){paint.strokeStyle='#c6f578';paint.lineWidth=2;
-        const w=head.unit*160;paint.strokeRect((1-head.x)*160-w/2,head.y*120-w*.6,w,w*1.2);}
+      const box=previewBox(head,160,120);
+      if(box){paint.strokeStyle='#c6f578';paint.lineWidth=2;paint.strokeRect(box.x,box.y,box.w,box.h);}
     });
     this.motionControl=control;
     button.addEventListener('click',()=>{this.audio.play('ui');control.toggle();});
@@ -213,4 +213,4 @@ class Game{
   snapshot(){return {state:this.state,distance:this.distance,score:this.score,tokens:this.tokens,speed:this.speed,multiplier:this.multiplier,player:{...this.player},power:{...this.power},threat:this.threat,generated:this.world.generated,entities:this.world.entities.length,collectibles:this.world.tokens.length,drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,best:this.save.data.best};}
 }
 
-(async()=>{try{await Promise.all([prepareTrainAsset(),prepareCityBuildingAsset(),prepareCharacterAsset(),prepareRailAsset(),prepareCityAsset(),prepareTreeAsset()]);indexBuildings();const game=new Game();if(new URLSearchParams(location.search).has('qa'))window.__rail={game,motion:()=>game.motionControl,motionSignal:createMotionSignal,normaliseHead,prepareTracker,requestHead,snapshot:()=>game.snapshot(),advance(seconds){const n=Math.ceil(seconds*120);for(let i=0;i<n;i++)game.step(1/120);game.render(1/60);return game.snapshot();},clear(){for(const e of game.world.entities)game.world.recycle(e);game.world.entities=[];game.world.tokens=[];for(const p of game.world.powers)game.scene.remove(p.model);game.world.powers=[];game.world.next=game.distance+10000;},spawn(type,lane,ahead){return game.world.addEntity(type,lane,game.distance+ahead).type;},power:type=>game.activate(type)};}catch(error){console.error(error);const l=$('loading');if(l)l.innerHTML='<b>NEON RAIL</b><p>Could not load the game.</p><p>Enable hardware acceleration in your browser and reopen the game.</p>';}})();
+(async()=>{try{await Promise.all([prepareTrainAsset(),prepareCityBuildingAsset(),prepareCharacterAsset(),prepareRailAsset(),prepareCityAsset(),prepareTreeAsset()]);indexBuildings();const game=new Game();if(new URLSearchParams(location.search).has('qa'))window.__rail={game,motion:()=>game.motionControl,motionSignal:createMotionSignal,normaliseHead,previewBox,prepareTracker,requestHead,snapshot:()=>game.snapshot(),advance(seconds){const n=Math.ceil(seconds*120);for(let i=0;i<n;i++)game.step(1/120);game.render(1/60);return game.snapshot();},clear(){for(const e of game.world.entities)game.world.recycle(e);game.world.entities=[];game.world.tokens=[];for(const p of game.world.powers)game.scene.remove(p.model);game.world.powers=[];game.world.next=game.distance+10000;},spawn(type,lane,ahead){return game.world.addEntity(type,lane,game.distance+ahead).type;},power:type=>game.activate(type)};}catch(error){console.error(error);const l=$('loading');if(l)l.innerHTML='<b>NEON RAIL</b><p>Could not load the game.</p><p>Enable hardware acceleration in your browser and reopen the game.</p>';}})();
