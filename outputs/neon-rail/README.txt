@@ -1,6 +1,17 @@
 NEON RAIL
 An original three-lane 3D arcade runner set on Meridian's golden-hour East Line.
 
+MOTION CONTROL (CAMERA)
+Press C, or the ◉ button, to steer with your body instead of the keys.
+Hold still for two seconds while it finds its centre, then:
+  lean or step LEFT / RIGHT  change lane
+  lift your head             jump
+  duck your head             slide
+The keyboard keeps working the whole time, and R re-centres if you shift
+in your seat. The camera is only opened when you ask for it, nothing is
+recorded, and no video ever leaves the machine -- the tracker runs
+entirely inside this file with no network access.
+
 PLAY
 Double-click PLAY.cmd or open NEON RAIL.html in Chrome, Edge, or Firefox.
 The game is fully offline. No installation, account, or server is required.

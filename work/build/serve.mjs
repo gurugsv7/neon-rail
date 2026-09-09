@@ -1,7 +1,7 @@
 import {createServer} from 'node:http';
 import {readFileSync} from 'node:fs';
 import {extname,join,normalize} from 'node:path';
-const types={'.html':'text/html','.glb':'model/gltf-binary','.js':'text/javascript','.css':'text/css','.png':'image/png'};
+const types={'.html':'text/html','.glb':'model/gltf-binary','.js':'text/javascript','.mjs':'text/javascript','.wasm':'application/wasm','.tflite':'application/octet-stream','.task':'application/octet-stream','.css':'text/css','.png':'image/png'};
 const root=join(process.cwd(),'..');
 createServer((req,res)=>{
   const path=join(root,normalize(decodeURIComponent(req.url.split('?')[0])));

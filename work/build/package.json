@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1",
     "esbuild": "^0.28.2",
     "fbx2gltf": "^0.9.7-p1",
     "meshoptimizer": "^1.2.0",

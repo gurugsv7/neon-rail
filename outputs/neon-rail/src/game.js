@@ -3,6 +3,10 @@ import {LANE,MAX_SPEED,TRAIN_ROOF,TRAIN_CLEARANCE,TRAIN_HALF,RAMP_LENGTH,PlayerC
 import {AudioManager} from './audio.js';
 import {prepareTrainAsset} from './train-asset.js';
 import {prepareCharacterAsset,characterModel} from './character-asset.js';
+import {createMotionControl} from './motion-control.js';
+import {prepareTracker,requestHead} from './motion-tracker.js';
+import {createMotionSignal,normaliseHead} from './motion-signal.js';
+
 import {prepareCityBuildingAsset} from './city-buildings-asset.js';
 import {prepareRailAsset} from './rail-asset.js';
 import {prepareCityAsset} from './city-asset.js';
@@ -112,11 +116,46 @@ class Game{
     this.shadow=new T.Mesh(new T.PlaneGeometry(2,2.1),new T.MeshBasicMaterial({map:shadowTexture(),transparent:true,depthWrite:false}));this.shadow.rotation.x=-Math.PI/2;this.scene.add(this.shadow);
     this.board=new T.Group();box(this.board,.75,.14,1.5,0,0,0,0x694f72,true);box(this.board,.6,.035,1.15,0,.085,0,0xe5afd9,true);for(const x of [-.28,.28])box(this.board,.04,.04,1.12,x,-.08,0,mat(0x75ffe4,{emissive:0x5effd3,emissiveIntensity:1.2}));this.scene.add(this.board);this.board.visible=false;
     this.bubble=new T.Mesh(new T.SphereGeometry(1.45,24,16),new T.MeshBasicMaterial({color:0x83caff,transparent:true,opacity:.12,wireframe:true,depthWrite:false}));this.scene.add(this.bubble);this.bubble.visible=false;
-    this.particles=new ParticleManager(this.scene);this.ui=new UIManager(this);this.input();this.world.step(0,this);this.world.renderTokens(this);$('loading').remove();this.last=performance.now();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);
+    this.particles=new ParticleManager(this.scene);this.ui=new UIManager(this);this.input();this.motion();this.world.step(0,this);this.world.renderTokens(this);$('loading').remove();this.last=performance.now();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);
   }
-  input(){window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' ','escape'].includes(k))e.preventDefault();if(e.repeat)return;if(k==='f'){this.fullscreen();return;}if(k==='m'){$('audio').click();return;}if(k==='escape'){if(this.state==='playing')this.pause();else if(this.state==='paused')this.resume();return;}if(this.state!=='playing'){if((k===' '||k==='enter')&&(this.state==='menu'||this.state==='over')){this.audio.start();this.start();}return;}if(this.player.fall)return;if(k==='a'||k==='arrowleft')this.player.move(-1);if(k==='d'||k==='arrowright')this.player.move(1);if(['w','arrowup',' '].includes(k)&&this.player.jump())this.audio.play('jump');if(k==='s'||k==='arrowdown'){this.player.duck();this.audio.play('slide');}});
+  input(){window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' ','escape'].includes(k))e.preventDefault();if(e.repeat)return;if(k==='f'){this.fullscreen();return;}if(k==='m'){$('audio').click();return;}if(k==='escape'){if(this.state==='playing')this.pause();else if(this.state==='paused')this.resume();return;}if(this.state!=='playing'){if((k===' '||k==='enter')&&(this.state==='menu'||this.state==='over')){this.audio.start();this.start();}return;}if(this.player.fall)return;if(k==='a'||k==='arrowleft')this.steer(-1);if(k==='d'||k==='arrowright')this.steer(1);if(['w','arrowup',' '].includes(k))this.hop();if(k==='s'||k==='arrowdown')this.crouch();});
     window.addEventListener('resize',()=>{this.camera.aspect=innerWidth/innerHeight;this.camera.updateProjectionMatrix();this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.6,1920/innerWidth,1080/innerHeight));this.renderer.setSize(innerWidth,innerHeight);});window.addEventListener('blur',()=>{if(this.state==='playing')this.pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&this.state==='playing')this.pause();});window.addEventListener('beforeunload',()=>this.persist());
   }
+  motion(){
+    const panel=$('motionpanel'),button=$('motion'),label=$('motionstatus'),lanes=$('motionlanes').children;
+    const view=$('motionview'),paint=view.getContext('2d');
+    const WORDS={off:'Camera off',starting:'Requesting camera…',loading:'Loading tracker…',
+      calibrating:'Hold still — centring',searching:'Step into view',tracking:'Lean to steer'};
+    const control=createMotionControl(this,(status,detail,head)=>{
+      const denied=detail==='denied';
+      label.textContent=status==='error'?(denied?'Camera blocked — keyboard still works':'Camera unavailable'):WORDS[status]||status;
+      label.className='motionstatus'+(status==='error'?' bad':status==='searching'||status==='calibrating'?' warn':'');
+      button.classList.toggle('on',control.active);
+      panel.classList.toggle('hidden',!control.active&&status!=='error');
+      for(let i=0;i<3;i++)lanes[i].classList.toggle('on',control.active&&i===this.player.lane);
+      if(!control.active||!control.video.videoWidth){paint.clearRect(0,0,160,120);return;}
+      // The self-view only has to reassure the player that tracking is live, so
+      // it is repainted at half the detection rate to keep work off the frame.
+      if((this.previewTick=(this.previewTick||0)+1)%2)return;
+      // Mirrored, so the preview behaves like a mirror and matches the control.
+      paint.save();paint.translate(160,0);paint.scale(-1,1);
+      paint.drawImage(control.video,0,0,160,120);paint.restore();
+      if(head){paint.strokeStyle='#c6f578';paint.lineWidth=2;
+        const w=head.unit*160;paint.strokeRect((1-head.x)*160-w/2,head.y*120-w*.6,w,w*1.2);}
+    });
+    this.motionControl=control;
+    button.addEventListener('click',()=>{this.audio.play('ui');control.toggle();});
+    addEventListener('keydown',e=>{const k=e.key.toLowerCase();
+      if(k==='c'&&!e.repeat)control.toggle();
+      if(k==='r'&&!e.repeat&&control.active)control.recalibrate();});
+  }
+  // Every input source goes through these, so the keyboard and the camera can
+  // never drift apart on guards, audio or lane clamping.
+  steer(dir){if(!this.accepting())return;this.player.move(dir);}
+  steerTo(lane){if(!this.accepting())return;const next=Math.max(0,Math.min(2,lane));if(next!==this.player.lane)this.player.move(next-this.player.lane);}
+  hop(){if(!this.accepting())return;if(this.player.jump())this.audio.play('jump');}
+  crouch(){if(!this.accepting())return;this.player.duck();this.audio.play('slide');}
+  accepting(){return this.state==='playing'&&!this.player.fall;}
   fullscreen(){if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else document.documentElement.requestFullscreen().catch(()=>this.toast('FULLSCREEN UNAVAILABLE','Try opening the game in your desktop browser'));}
   start(){this.audio.start();this.distance=0;this.score=0;this.tokens=0;this.speed=17;this.time=0;this.threat=0;this.glance=0;this.shake=0;this.pendingDeath=0;this.chain=0;this.lastToken=0;this.newBest=false;this.roofTimer=0;this.accum=0;this.player.reset();for(const k in this.power)this.power[k]=0;this.world.reset(2039+(this.seed++)*919);this.state='playing';this.ui.state(this.state);this.ui.lastUpdate=1;this.ui.update(0);this.toast('DELIVERY IN MOTION','Follow the flux. Find your line.',2.5);}
   pause(){if(this.state!=='playing')return;this.state='paused';this.ui.state('paused');this.persist();}
@@ -174,4 +213,4 @@ class Game{
   snapshot(){return {state:this.state,distance:this.distance,score:this.score,tokens:this.tokens,speed:this.speed,multiplier:this.multiplier,player:{...this.player},power:{...this.power},threat:this.threat,generated:this.world.generated,entities:this.world.entities.length,collectibles:this.world.tokens.length,drawCalls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,best:this.save.data.best};}
 }
 
-(async()=>{try{await Promise.all([prepareTrainAsset(),prepareCityBuildingAsset(),prepareCharacterAsset(),prepareRailAsset(),prepareCityAsset(),prepareTreeAsset()]);indexBuildings();const game=new Game();if(new URLSearchParams(location.search).has('qa'))window.__rail={game,snapshot:()=>game.snapshot(),advance(seconds){const n=Math.ceil(seconds*120);for(let i=0;i<n;i++)game.step(1/120);game.render(1/60);return game.snapshot();},clear(){for(const e of game.world.entities)game.world.recycle(e);game.world.entities=[];game.world.tokens=[];for(const p of game.world.powers)game.scene.remove(p.model);game.world.powers=[];game.world.next=game.distance+10000;},spawn(type,lane,ahead){return game.world.addEntity(type,lane,game.distance+ahead).type;},power:type=>game.activate(type)};}catch(error){console.error(error);const l=$('loading');if(l)l.innerHTML='<b>NEON RAIL</b><p>Could not load the game.</p><p>Enable hardware acceleration in your browser and reopen the game.</p>';}})();
+(async()=>{try{await Promise.all([prepareTrainAsset(),prepareCityBuildingAsset(),prepareCharacterAsset(),prepareRailAsset(),prepareCityAsset(),prepareTreeAsset()]);indexBuildings();const game=new Game();if(new URLSearchParams(location.search).has('qa'))window.__rail={game,motion:()=>game.motionControl,motionSignal:createMotionSignal,normaliseHead,prepareTracker,requestHead,snapshot:()=>game.snapshot(),advance(seconds){const n=Math.ceil(seconds*120);for(let i=0;i<n;i++)game.step(1/120);game.render(1/60);return game.snapshot();},clear(){for(const e of game.world.entities)game.world.recycle(e);game.world.entities=[];game.world.tokens=[];for(const p of game.world.powers)game.scene.remove(p.model);game.world.powers=[];game.world.next=game.distance+10000;},spawn(type,lane,ahead){return game.world.addEntity(type,lane,game.distance+ahead).type;},power:type=>game.activate(type)};}catch(error){console.error(error);const l=$('loading');if(l)l.innerHTML='<b>NEON RAIL</b><p>Could not load the game.</p><p>Enable hardware acceleration in your browser and reopen the game.</p>';}})();

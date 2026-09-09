@@ -24,3 +24,13 @@ outputs/neon-rail/preview.png
 
 # Stale build artifact; the single-file HTML is the deliverable
 outputs/*.zip
+
+# MediaPipe runtime for the camera control. All of it is either an unmodified
+# upstream file or a build product, so it is fetched rather than stored:
+#   npm --prefix work/build install
+#   node work/build/stage-mediapipe.mjs
+# (motion-worker.workerjs is emitted by work/build/build.mjs.)
+outputs/neon-rail/assets/mediapipe/
+work/build/models/
+work/build/mp-test/
+work/probe.html
