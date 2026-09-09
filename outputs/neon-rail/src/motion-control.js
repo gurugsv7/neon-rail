@@ -16,8 +16,12 @@ export function createMotionControl(game,ui){
   let stream=null,timer=null,signal=null,active=false,streaming=false;
   let status='off',lastHead=null,calibrateUntil=0;
 
+  // Called on every detection, not only when the status word changes: the
+  // panel has a live self-view and a lane indicator to repaint, and gating this
+  // on a status change froze the preview the moment tracking settled.
   function report(next,detail){
-    if(next!==status||detail){status=next;ui?.(next,detail,lastHead);}
+    status=next;
+    ui?.(next,detail,lastHead);
   }
 
   async function enable(){
@@ -25,8 +29,12 @@ export function createMotionControl(game,ui){
     try{
       report('starting');
       // Asked for only on a deliberate click, never on load.
+      // The browser's permission prompt takes focus, and the game pauses on
+      // blur; flag it so agreeing to the camera does not stop the run.
+      game.awaitingCamera=true;
       stream=await navigator.mediaDevices.getUserMedia({
         video:{width:{ideal:640},height:{ideal:480},facingMode:'user'},audio:false});
+      game.awaitingCamera=false;
       video.srcObject=stream;await video.play();
       report('loading');
       await prepareTracker();
@@ -44,6 +52,7 @@ export function createMotionControl(game,ui){
       if(!streaming)timer=setInterval(step,1000/DETECT_HZ);
       return true;
     }catch(err){
+      game.awaitingCamera=false;
       disable();
       report('error',err&&err.name==='NotAllowedError'?'denied':'unavailable');
       return false;
