@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{--mono:"Cascadia Mono","Consolas",ui-monospace,monospace;}
+    body{margin:0;font-family:var(--mono);}
+    a{color:#8dff9b;} a:hover{color:#d6ffb0;}
+  </style>
+</helmet>
+
+<div style="position:relative;width:640px;height:420px;overflow:hidden;background:#05100a;color:#8dff9b;font-family:var(--mono)">
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,#0000 0 2px,#8dff9b12 2px 3px)"></div>
+
+  <div style="position:absolute;left:22px;top:20px;font-size:9px;letter-spacing:.24em;opacity:.7">ALT A — PHOSPHOR</div>
+
+  <div style="position:absolute;left:22px;top:56px">
+    <div style="font-size:52px;letter-spacing:-.02em;line-height:.95">NEON</div>
+    <div style="font-size:52px;letter-spacing:-.02em;line-height:.95;color:#d6ffb0">RAIL_</div>
+  </div>
+  <div style="position:absolute;left:22px;top:180px;font-size:10px;letter-spacing:.16em;line-height:1.9;opacity:.75">
+    &gt; ONE COURIER<br>&gt; THREE TRACKS<br>&gt; A WHOLE CITY TO OUTRUN
+  </div>
+  <div style="position:absolute;left:22px;top:250px;border:1px solid #8dff9b;padding:11px 18px;font-size:12px;letter-spacing:.2em">[ RUN ]</div>
+  <div style="position:absolute;left:22px;top:310px;font-size:9px;letter-spacing:.18em;opacity:.6">BEST 014892</div>
+
+  <!-- wireframe track, drawn as vectors on a scope -->
+  <svg style="position:absolute;right:0;top:40px" width="330" height="330" viewBox="0 0 330 330" fill="none" stroke="#8dff9b" stroke-width="1" opacity=".55">
+    <path d="M40 320 L150 60 M290 320 L180 60 M110 200 L220 200 M85 250 L245 250 M60 300 L270 300 M128 140 L202 140"/>
+    <rect x="132" y="150" width="66" height="70"/>
+    <path d="M132 150 165 120 231 120 198 150M198 150 231 120 231 190 198 220"/>
+  </svg>
+
+  <div style="position:absolute;right:22px;bottom:22px;border:1px solid #8dff9b66;padding:9px 12px;font-size:9px;letter-spacing:.16em;line-height:1.8">
+    SCORE 012840<br>DIST  01284M<br>FLUX  062 x3
+  </div>
+
+  <div style="position:absolute;left:22px;bottom:22px;font-size:8px;letter-spacing:.18em;opacity:.5;line-height:1.8">
+    STRENGTH: hardware-terminal feel, extremely cheap to render.<br>TRADE-OFF: monochrome kills the golden-hour city behind it.
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

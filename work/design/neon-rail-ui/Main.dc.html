@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --ink:#0d1017;--ink2:#161c27;--ink3:#26303f;
+      --paper:#f1ebdd;--paper2:#aca596;
+      --signal:#ff4a17;--live:#5ce9c9;--gold:#ffc23d;
+      --display:"Bahnschrift","DIN Alternate","Arial Narrow",sans-serif;
+      --mono:"Cascadia Mono","Consolas",ui-monospace,monospace;
+    }
+    body{margin:0;font-family:var(--display);}
+    a{color:#ff4a17;} a:hover{color:#ffc23d;}
+  </style>
+</helmet>
+
+<div style="position:relative;width:1440px;height:900px;overflow:hidden;background:linear-gradient(#a9d3dd 0%,#cfe0d2 44%,#f4d4a0 78%,#f0bc84 100%);font-family:var(--display);color:var(--paper)">
+
+  <!-- Stylised city + track: a stand-in for the live 3D scene behind the UI. -->
+  <div style="position:absolute;left:0;right:0;bottom:170px;height:330px;display:flex;align-items:flex-end;gap:14px;padding:0 40px;opacity:.55">
+    <div style="width:120px;height:210px;background:#6f8f9b"></div>
+    <div style="width:86px;height:290px;background:#5d7f8d"></div>
+    <div style="width:150px;height:160px;background:#7d9aa3"></div>
+    <div style="width:104px;height:250px;background:#557684"></div>
+    <div style="width:132px;height:195px;background:#6f8f9b"></div>
+    <div style="width:92px;height:305px;background:#4e6e7d"></div>
+    <div style="width:160px;height:150px;background:#83a0a8"></div>
+    <div style="width:110px;height:235px;background:#5d7f8d"></div>
+    <div style="width:140px;height:275px;background:#527383"></div>
+    <div style="width:118px;height:180px;background:#789aa4"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(#9d8468,#7d6750)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:96px;height:8px;background:#3f3529"></div>
+  <div style="position:absolute;left:0;right:0;bottom:46px;height:8px;background:#3f3529"></div>
+
+  <!-- The UI is printed transit ephemera: ink slabs with a torn edge, not frosted glass. -->
+  <div style="position:absolute;left:0;top:0;bottom:0;width:672px;background:linear-gradient(100deg,#0d1017 0 78%,#0d1017f2 100%)"></div>
+  <div style="position:absolute;left:668px;top:0;bottom:0;width:4px;background:repeating-linear-gradient(to bottom,#f1ebdd 0 6px,transparent 6px 12px)"></div>
+
+  <div style="position:absolute;right:40px;top:40px;width:28px;height:28px">
+    <div style="position:absolute;left:13px;top:0;width:2px;height:28px;background:#0d101788"></div>
+    <div style="position:absolute;top:13px;left:0;height:2px;width:28px;background:#0d101788"></div>
+    <div style="position:absolute;left:5px;top:5px;width:18px;height:18px;border:2px solid #0d101788;border-radius:50%"></div>
+  </div>
+
+  <div style="position:absolute;left:64px;top:56px;display:flex;align-items:center;gap:14px">
+    <div style="width:34px;height:34px;background:#ff4a17;display:grid;place-items:center">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d1017" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V4h12v13ZM6 10h12M9 17l-3 4m9-4 3 4"/></svg>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.22em;line-height:1.6;color:#aca596">
+      MERIDIAN TRANSIT AUTHORITY<br><span style="color:#f1ebdd">COURIER DIVISION — EAST LINE</span>
+    </div>
+  </div>
+  <div style="position:absolute;left:64px;top:118px;width:544px;height:2px;background:#ffffff26"></div>
+
+  <div style="position:absolute;left:64px;top:146px;display:flex;align-items:stretch;gap:2px;font-family:var(--mono);font-size:11px;letter-spacing:.18em">
+    <div style="background:#ff4a17;color:#0d1017;padding:7px 11px;font-weight:700">DEPARTING</div>
+    <div style="background:#26303f;padding:7px 11px;color:#f1ebdd">SERVICE 07</div>
+    <div style="background:#26303f;padding:7px 11px;color:#aca596">PLATFORM 1 · 2 · 3</div>
+  </div>
+
+  <div style="position:absolute;left:62px;top:206px">
+    <div style="font-size:152px;line-height:.82;letter-spacing:-.045em;font-weight:700;font-stretch:condensed;color:#f1ebdd">NEON</div>
+    <div style="display:flex;align-items:baseline;gap:18px">
+      <div style="font-size:152px;line-height:.86;letter-spacing:-.045em;font-weight:700;font-stretch:condensed;color:#ff4a17">RAIL</div>
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#aca596;padding-bottom:16px">№ 0451</div>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:64px;top:520px;width:2px;height:74px;background:#ff4a17"></div>
+  <div style="position:absolute;left:84px;top:520px;width:330px;font-size:19px;line-height:1.55;color:#ddd6c6;font-stretch:semi-condensed;text-wrap:pretty">
+    One courier. Three tracks.<br>A whole city to outrun.
+  </div>
+
+  <!-- Primary action is a ticket with a perforated stub, not a rounded pill. -->
+  <div style="position:absolute;left:64px;top:626px;display:flex;align-items:stretch;height:66px;box-shadow:8px 8px 0 #0d1017">
+    <div style="width:12px;background:repeating-linear-gradient(to bottom,#ff4a17 0 7px,#0d1017 7px 14px)"></div>
+    <div style="display:flex;align-items:center;gap:56px;padding:0 26px;background:#ff4a17;color:#0d1017">
+      <span style="font-size:23px;font-weight:700;letter-spacing:.1em;font-stretch:condensed">BOARD NOW</span>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0d1017" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 5 7 7-7 7m7-14 7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <!-- Numbers read as split-flap departure-board cells. -->
+  <div style="position:absolute;left:64px;top:730px;display:flex;align-items:center;gap:16px">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:#aca596;width:66px;line-height:1.5">PERSONAL<br>BEST</div>
+    <div style="display:flex;gap:3px">
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#f1ebdd">0<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#f1ebdd">1<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#f1ebdd">4<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#f1ebdd">8<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#ffc23d">9<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:34px;height:46px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:26px;color:#ffc23d">2<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+    </div>
+  </div>
+
+  <!-- The mission is a torn stub, paper side up: the one warm surface in the layout. -->
+  <div style="position:absolute;right:76px;top:212px;width:286px;background:#f1ebdd;color:#0d1017;box-shadow:0 18px 50px #0d101733">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#0d1017;color:#f1ebdd">
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:.2em">NEXT DELIVERY</span>
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#ff4a17">OPEN</span>
+    </div>
+    <div style="padding:20px 18px 16px">
+      <div style="font-size:25px;font-weight:700;font-stretch:condensed;letter-spacing:-.01em;line-height:1.1">Collect 100<br>flux tokens</div>
+      <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#5d5748;margin-top:16px"><span>PROGRESS</span><span>62 / 100</span></div>
+      <div style="height:6px;background:#0d101718;margin-top:7px"><div style="width:62%;height:6px;background:#ff4a17"></div></div>
+    </div>
+    <div style="height:2px;background:repeating-linear-gradient(to right,#0d101733 0 6px,transparent 6px 12px)"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#5d5748">
+      <span>MTA / CD-07</span>
+      <span style="display:flex;gap:2px;align-items:flex-end">
+        <i style="width:2px;height:15px;background:#0d1017;display:block"></i><i style="width:4px;height:15px;background:#0d1017;display:block"></i><i style="width:2px;height:15px;background:#0d1017;display:block"></i><i style="width:5px;height:15px;background:#0d1017;display:block"></i><i style="width:2px;height:15px;background:#0d1017;display:block"></i><i style="width:3px;height:15px;background:#0d1017;display:block"></i><i style="width:6px;height:15px;background:#0d1017;display:block"></i>
+      </span>
+    </div>
+  </div>
+
+  <div style="position:absolute;right:30px;top:470px;font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:#0d101799;writing-mode:vertical-rl">GOLDEN HOUR — ALL SIGNALS LIVE</div>
+
+  <div style="position:absolute;left:64px;bottom:44px;display:flex;align-items:center;gap:26px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#aca596">
+    <span style="display:flex;align-items:center;gap:7px"><b style="display:grid;place-items:center;min-width:26px;height:26px;background:#161c27;border-bottom:2px solid #ff4a17;color:#f1ebdd;font-size:11px">A</b><b style="display:grid;place-items:center;min-width:26px;height:26px;background:#161c27;border-bottom:2px solid #ff4a17;color:#f1ebdd;font-size:11px">D</b>SWITCH</span>
+    <span style="display:flex;align-items:center;gap:7px"><b style="display:grid;place-items:center;min-width:62px;height:26px;background:#161c27;border-bottom:2px solid #ff4a17;color:#f1ebdd;font-size:11px">SPACE</b>JUMP</span>
+    <span style="display:flex;align-items:center;gap:7px"><b style="display:grid;place-items:center;min-width:26px;height:26px;background:#161c27;border-bottom:2px solid #ff4a17;color:#f1ebdd;font-size:11px">S</b>SLIDE</span>
+    <span style="display:flex;align-items:center;gap:7px"><b style="display:grid;place-items:center;min-width:26px;height:26px;background:#161c27;border-bottom:2px solid #5ce9c9;color:#f1ebdd;font-size:11px">C</b>CAMERA</span>
+  </div>
+
+  <div style="position:absolute;right:40px;bottom:44px;display:flex;gap:6px">
+    <div style="width:44px;height:44px;background:#0d1017;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1ebdd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h4l5-5v16l-5-5H3ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></div>
+    <div style="width:44px;height:44px;background:#0d1017;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1ebdd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></div>
+    <div style="width:44px;height:44px;background:#5ce9c9;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d1017" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3ZM16 13a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --display:"Bahnschrift","DIN Alternate","Arial Narrow",sans-serif;
+      --mono:"Cascadia Mono","Consolas",ui-monospace,monospace;
+    }
+    body{margin:0;font-family:var(--display);}
+    a{color:#ff4a17;} a:hover{color:#ffc23d;}
+  </style>
+</helmet>
+
+<div style="position:relative;width:1440px;height:900px;overflow:hidden;background:linear-gradient(#a9d3dd 0%,#cfe0d2 44%,#f4d4a0 78%,#f0bc84 100%);font-family:var(--display);color:#f1ebdd">
+
+  <div style="position:absolute;left:0;right:0;bottom:170px;height:330px;display:flex;align-items:flex-end;gap:14px;padding:0 40px;opacity:.5">
+    <div style="width:120px;height:210px;background:#6f8f9b"></div>
+    <div style="width:86px;height:290px;background:#5d7f8d"></div>
+    <div style="width:150px;height:160px;background:#7d9aa3"></div>
+    <div style="width:104px;height:250px;background:#557684"></div>
+    <div style="width:132px;height:195px;background:#6f8f9b"></div>
+    <div style="width:92px;height:305px;background:#4e6e7d"></div>
+    <div style="width:160px;height:150px;background:#83a0a8"></div>
+    <div style="width:110px;height:235px;background:#5d7f8d"></div>
+    <div style="width:140px;height:275px;background:#527383"></div>
+    <div style="width:118px;height:180px;background:#789aa4"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(#9d8468,#7d6750)"></div>
+  <div style="position:absolute;left:0;right:0;bottom:96px;height:8px;background:#3f3529"></div>
+  <div style="position:absolute;left:0;right:0;bottom:46px;height:8px;background:#3f3529"></div>
+  <div style="position:absolute;left:660px;bottom:150px;width:120px;height:210px;background:#2c3a46"></div>
+  <div style="position:absolute;left:690px;bottom:170px;width:60px;height:110px;background:#f1ebdd"></div>
+
+  <!-- SCOREBOARD: a departure board bolted to the top-left corner. -->
+  <div style="position:absolute;left:40px;top:40px;background:#0d1017;box-shadow:6px 6px 0 #0d101740">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:28px;padding:9px 14px;background:#ff4a17;color:#0d1017;font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:700">
+      <span>SCORE</span><span>SERVICE 07</span>
+    </div>
+    <div style="display:flex;gap:3px;padding:14px 14px 10px">
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#f1ebdd">0<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#f1ebdd">1<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#f1ebdd">2<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#f1ebdd">8<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#ffc23d">4<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+      <div style="position:relative;width:38px;height:52px;background:#161c27;border-top:2px solid #ffffff1f;display:grid;place-items:center;font-family:var(--mono);font-size:30px;color:#ffc23d">0<div style="position:absolute;left:0;right:0;top:50%;height:1px;background:#0d1017"></div></div>
+    </div>
+    <div style="display:flex;align-items:stretch;gap:2px;padding:0 14px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.1em">
+      <span style="display:flex;align-items:center;gap:7px;background:#1b2330;padding:7px 10px;color:#ddd6c6">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7f9aa4" stroke-width="2" stroke-linecap="round"><path d="M8 21V3m8 18V3M8 6h8M8 12h8M8 18h8"/></svg>1 284 m
+      </span>
+      <span style="display:flex;align-items:center;gap:7px;background:#1b2330;padding:7px 10px;color:#ddd6c6">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5ce9c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9ZM12 8v8"/></svg>62
+      </span>
+      <span style="background:#ff4a17;color:#0d1017;padding:7px 10px;font-weight:700">&times;3</span>
+    </div>
+  </div>
+
+  <!-- Security signal: hazard tape when it turns, never a soft pill. -->
+  <div style="position:absolute;left:50%;top:40px;transform:translateX(-50%);display:flex;align-items:stretch;background:#0d1017">
+    <div style="width:10px;background:repeating-linear-gradient(135deg,#ffc23d 0 6px,#0d1017 6px 12px)"></div>
+    <div style="display:flex;align-items:center;gap:11px;padding:9px 16px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#aca596">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5ce9c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9M12 7a5 5 0 1 0 5 5m-5 0 8-8M12 12h.01"/></svg>
+      SECURITY
+      <span style="display:flex;align-items:flex-end;gap:3px;height:14px"><i style="display:block;width:4px;height:5px;background:#5ce9c9"></i><i style="display:block;width:4px;height:9px;background:#2d3c44"></i><i style="display:block;width:4px;height:14px;background:#2d3c44"></i></span>
+    </div>
+  </div>
+
+  <!-- Speed as a segmented ladder: reads at a glance at 60fps. -->
+  <div style="position:absolute;left:40px;bottom:40px;background:#0d1017;padding:13px 16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#aca596;margin-bottom:10px">
+      <span style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4a17" stroke-width="1.9" stroke-linecap="round"><path d="M4 19a10 10 0 1 1 16 0M12 14l5-6M5 12h1m12 0h1M12 5v1"/></svg>GARDEN VIADUCT</span>
+      <span style="color:#f1ebdd">31 <span style="color:#575f6b">KM/H</span></span>
+    </div>
+    <div style="display:flex;gap:2px">
+      <i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i><i style="display:block;width:16px;height:9px;background:#ff4a17"></i>
+      <i style="display:block;width:16px;height:9px;background:#2a3340"></i><i style="display:block;width:16px;height:9px;background:#2a3340"></i><i style="display:block;width:16px;height:9px;background:#2a3340"></i><i style="display:block;width:16px;height:9px;background:#2a3340"></i>
+    </div>
+    <div style="display:flex;gap:2px;margin-top:10px">
+      <i style="display:block;width:32px;height:4px;background:#2a3340"></i><i style="display:block;width:32px;height:4px;background:#2a3340"></i><i style="display:block;width:50px;height:4px;background:#5ce9c9"></i><i style="display:block;width:32px;height:4px;background:#2a3340"></i>
+    </div>
+  </div>
+
+  <!-- Power timers: square cells that drain downward, so time left is a height. -->
+  <div style="position:absolute;right:40px;bottom:40px;display:flex;gap:8px">
+    <div style="position:relative;width:74px;height:74px;background:#0d1017;overflow:hidden">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:62%;background:#ff4a1726"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#ff4a17"></div>
+      <div style="position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+        <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#ff4a17" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 5 13h6l-1 9 9-12h-6Z"/></svg>
+        <span style="font-family:var(--mono);font-size:11px;color:#f1ebdd">6s</span>
+      </div>
+    </div>
+    <div style="position:relative;width:74px;height:74px;background:#0d1017;overflow:hidden">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:24%;background:#5ce9c926"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#5ce9c9"></div>
+      <div style="position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+        <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#5ce9c9" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6ZM8 12l3 3 5-6"/></svg>
+        <span style="font-family:var(--mono);font-size:11px;color:#f1ebdd">2s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast: a stamped notice. -->
+  <div style="position:absolute;left:50%;top:180px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:#0d1017;padding:13px 22px 13px 14px;box-shadow:6px 6px 0 #0d101733">
+    <div style="width:6px;align-self:stretch;background:#ffc23d"></div>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffc23d" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9ZM12 8v8"/></svg>
+    <div>
+      <div style="font-size:21px;font-weight:700;letter-spacing:.06em;font-stretch:condensed">FLUX STREAK</div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:#ffc23d;margin-top:3px">+100 BONUS</div>
+    </div>
+  </div>
+
+  <!-- Camera panel keeps the same ink vocabulary. -->
+  <div style="position:absolute;right:40px;top:104px;width:186px;background:#0d1017;padding:10px">
+    <div style="display:flex;gap:2px;margin-bottom:8px;font-family:var(--mono);font-size:9px;letter-spacing:.14em">
+      <div style="flex:1;text-align:center;padding:6px 0;background:#5ce9c9;color:#0d1017;font-weight:700">FULL BODY</div>
+      <div style="flex:1;text-align:center;padding:6px 0;background:#1b2330;color:#aca596">HEAD</div>
+    </div>
+    <div style="height:124px;background:#1b2330;position:relative">
+      <div style="position:absolute;left:58px;top:24px;width:52px;height:64px;border:2px solid #5ce9c9"></div>
+      <div style="position:absolute;left:58px;top:18px;font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:#5ce9c9">LOCK</div>
+    </div>
+    <div style="display:flex;gap:2px;margin-top:8px">
+      <i style="display:block;flex:1;height:5px;background:#2a3340"></i><i style="display:block;flex:1;height:5px;background:#5ce9c9"></i><i style="display:block;flex:1;height:5px;background:#2a3340"></i>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:#5ce9c9;text-align:center;margin-top:8px">TRACKING</div>
+  </div>
+
+  <div style="position:absolute;right:40px;top:40px;display:flex;gap:6px">
+    <div style="width:44px;height:44px;background:#0d1017;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1ebdd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h4l5-5v16l-5-5H3ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></div>
+    <div style="width:44px;height:44px;background:#0d1017;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1ebdd" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></div>
+    <div style="width:44px;height:44px;background:#5ce9c9;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d1017" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h4l2-3h6l2 3h4v13H3ZM16 13a4 4 0 1 0-8 0 4 4 0 0 0 8 0"/></svg></div>
+    <div style="width:44px;height:44px;background:#0d1017;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1ebdd" stroke-width="1.9" stroke-linecap="round"><path d="M8 5v14m8-14v14"/></svg></div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

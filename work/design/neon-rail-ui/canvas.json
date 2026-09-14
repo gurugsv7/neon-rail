@@ -1,0 +1,27 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Start screen" },
+    { "file": "HUD.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "In-run HUD" },
+    { "file": "Pause.dc.html", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "Pause" },
+    { "file": "GameOver.dc.html", "x": 4680, "y": 0, "w": 1440, "h": 900, "title": "End of run" },
+    { "file": "AltPhosphor.dc.html", "x": 0, "y": 1080, "w": 640, "h": 420, "title": "Alt A — Phosphor" },
+    { "file": "AltConcrete.dc.html", "x": 760, "y": 1080, "w": 640, "h": 420, "title": "Alt B — Concrete & Hazard" }
+  ],
+  "annotations": [
+    {
+      "id": "direction",
+      "x": 0,
+      "y": -220,
+      "w": 620,
+      "text": "DIRECTION: Printed transit ephemera.\n\nInk slabs, hard edges, zero rounded pills, zero frosted glass. Numbers read as split-flap departure-board cells. The ticket stub is the only warm surface.\n\nType: Bahnschrift / DIN Alternate (display) + Cascadia Mono (data). Both ship with the OS, so the game stays fully offline.\n\nInk #0d1017 - Paper #f1ebdd - Signal #ff4a17 - Live #5ce9c9 - Gold #ffc23d"
+    },
+    {
+      "id": "alternates",
+      "x": 1560,
+      "y": 1080,
+      "w": 560,
+      "text": "Two directions I did not take, kept for comparison. Both are low-fi sketches, not built out."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

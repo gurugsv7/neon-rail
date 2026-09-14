@@ -1,14 +1,399 @@
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#b7d9df;color:#f9f3de;font-family:'Segoe UI',Arial,sans-serif}canvas{display:block;width:100%;height:100%}button{font:inherit;cursor:pointer;border:0}button:focus-visible{outline:3px solid #fff;outline-offset:6px}.hidden{display:none!important}#ui{position:fixed;inset:0;pointer-events:none;user-select:none}#ui button{pointer-events:auto}.topline{position:absolute;left:4%;top:4%;display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:3px;font-size:12px}.railmark{display:inline-grid;place-items:center;width:30px;height:30px;border:2px solid currentColor;transform:skew(-12deg);font-size:17px;letter-spacing:-3px;padding-right:3px}.righttools{position:absolute;right:3%;top:3%;display:flex;gap:9px;z-index:20}.iconbtn{background:#173d49b8;color:#fff;border:1px solid #eaf1d83b;border-radius:50%;width:40px;height:40px;font-size:17px;backdrop-filter:blur(12px)}.iconbtn:hover{background:#246173}.menu{position:absolute;inset:0;background:linear-gradient(90deg,#123341b8 0%,#17384855 36%,transparent 66%)}.menucontent{position:absolute;left:7%;top:23%;width:450px;max-width:44vw}.eyebrow{font-size:12px;letter-spacing:4px;font-weight:700;color:#c8f2d6;margin:0 0 17px}.title{font-size:clamp(68px,8.8vw,144px);line-height:.79;letter-spacing:-7px;font-weight:950;font-style:italic;margin:0 0 27px;text-shadow:0 6px 0 #123c4655}.title span{color:#bdf277}.tagline{font-size:17px;letter-spacing:.3px;color:#e0ece7;max-width:320px;line-height:1.6;margin:0 0 27px}.runbutton{display:flex;align-items:center;justify-content:space-between;gap:50px;min-width:235px;padding:19px 26px;background:#c6f578;color:#173b3c;font-size:17px;font-weight:900;letter-spacing:2px;border-radius:4px;box-shadow:0 6px 0 #578957;transition:transform .15s,background .15s}.runbutton:hover{transform:translateY(-3px);background:#d7ff98}.runbutton:active{transform:translateY(3px)}.runbutton b{font-size:23px}.bestline{font-size:11px;letter-spacing:2px;color:#d6e6dd;margin:24px 0}.bestline strong{font-size:18px;margin-left:12px;letter-spacing:1px;color:#fff}.bottomline{position:absolute;bottom:4%;left:4%;right:4%;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;font-size:11px;letter-spacing:1.3px;color:#e6eee4}.key{display:inline-block;min-width:25px;padding:5px 6px;border:1px solid #e1ead78a;border-radius:4px;text-align:center;margin-right:4px;font-size:11px;background:#13374455}.controls{display:flex;gap:22px;align-items:center}.district{text-align:right;line-height:1.8}.district strong{font-size:14px;letter-spacing:3px}.hud{position:absolute;inset:0}.scorepanel{position:absolute;top:4%;left:4%;text-shadow:0 2px 9px #123d4670}.smalllabel{font-size:10px;letter-spacing:3px;font-weight:800}.scorevalue{font-size:44px;font-weight:900;letter-spacing:-1px;line-height:1.2;font-variant-numeric:tabular-nums}.substats{display:flex;gap:22px;margin-top:8px;font-weight:700;font-size:15px;align-items:center}.tokenicon{color:#c9ff8e;font-size:19px}.mult{padding:5px 9px;background:#184852b8;border-radius:4px;color:#c6f578;font-size:13px}.hudbottom{position:absolute;bottom:4%;left:4%;right:4%;display:flex;justify-content:space-between;align-items:flex-end}.speed{font-size:12px;letter-spacing:2px}.speedtrack{height:3px;width:150px;background:#ffffff44;margin-top:9px}.speedtrack i{display:block;height:3px;background:#c6f578;width:10%}.powers{display:flex;gap:10px}.power{background:#153e4dda;padding:10px 13px;border-radius:4px;border-bottom:3px solid #c6f578;min-width:105px;font-size:10px;letter-spacing:1px}.power strong{display:block;font-size:12px;margin-bottom:7px}.power i{height:3px;background:#c6f578;display:block}.toast{position:absolute;top:26%;left:50%;transform:translate(-50%,-10px);opacity:0;text-align:center;font-size:19px;font-weight:850;letter-spacing:2px;text-shadow:0 3px 8px #1b3b43;transition:opacity .15s,transform .2s}.toast.show{opacity:1;transform:translate(-50%,0)}.toast small{display:block;font-size:11px;letter-spacing:2px;margin-top:7px;color:#c9ff8f}.chase{position:absolute;left:50%;top:5%;transform:translateX(-50%);font-size:10px;letter-spacing:3px;padding:9px 14px;border-radius:3px;background:#273e4890}.chase.danger{background:#c95842d9;color:#fff}.modal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0c2c3d8a;backdrop-filter:blur(8px)}.sheet{width:450px;max-width:90vw;text-align:center;padding:36px 42px;background:#173f49f2;border-top:4px solid #c6f578;box-shadow:0 20px 90px #12364255}.sheet h2{font-style:italic;font-size:42px;letter-spacing:-1px;margin:8px 0 22px}.sheet .runbutton{width:100%;margin:22px 0 15px}.textbutton{padding:10px;background:transparent;color:#d6e9e4;letter-spacing:2px;font-size:11px;font-weight:700}.textbutton:hover{color:#c6f578}.resultscore{font-size:60px;font-weight:950;color:#c6f578}.resultstats{display:flex;justify-content:space-around;margin:16px 0 25px}.resultstats strong{display:block;font-size:20px;margin-top:7px}.missions{text-align:left;border-top:1px solid #ffffff25;padding-top:15px}.mission{margin:12px 0;font-size:12px;color:#e0eade}.mission span{float:right;color:#bbed81}.missionbar{margin-top:7px;height:3px;background:#ffffff20}.missionbar i{display:block;height:100%;background:#bdf277}.menu-mission{position:absolute;right:4%;top:19%;text-align:right;font-size:11px;line-height:1.8;color:#244956;background:#f4ecd3d9;padding:13px 18px;border-right:3px solid #285c65;max-width:240px}.menu-mission strong{font-size:11px;letter-spacing:2px}.menu-mission p{margin:4px 0 0}.flash{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 150px #ed654e;opacity:0;transition:opacity .16s}#loading{position:fixed;inset:0;display:grid;place-content:center;text-align:center;background:#173f49;z-index:100;font-size:13px;letter-spacing:4px}#loading b{font-size:42px;letter-spacing:-2px;color:#c6f578;margin-bottom:15px}#help{position:absolute;bottom:14%;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:1px;background:#173f49b8;padding:12px 20px;border-radius:4px;white-space:nowrap}.tokenpop{animation:pop .18s}@keyframes pop{50%{transform:scale(1.3);color:#d3ff7e}}@media(max-height:750px){.menucontent{top:20%}.title{font-size:90px;margin-bottom:20px}.tagline{margin-bottom:20px}.sheet{padding:20px 35px}.sheet h2{font-size:34px;margin:5px 0 10px}.resultscore{font-size:48px}.mission{margin:9px 0}.menu-mission{top:18%}}@media(max-width:800px){.menucontent{max-width:65vw;left:6%}.title{font-size:80px}.tagline{font-size:14px;max-width:250px}.menu-mission{display:none}.controls{gap:8px;font-size:9px}.district{display:none}.topline{font-size:10px}.powers{gap:4px}.power{min-width:75px;padding:7px}.power strong{font-size:9px}}
+/* NEON RAIL — interface.
 
-/* Motion control: a small self-view so the player can see the game is tracking
-   them, which is the single biggest usability factor in camera-controlled games. */
-.motionpanel{position:absolute;right:3%;top:calc(3% + 52px);width:160px;background:#173f49e0;border:1px solid #eaf1d833;border-radius:6px;padding:8px;backdrop-filter:blur(10px);z-index:20;pointer-events:none}
-.motionpanel canvas{display:block;width:144px;height:108px;border-radius:4px;background:#0e2b34;object-fit:cover}
-.motionlanes{display:flex;gap:4px;margin-top:6px}
-.motionlanes i{flex:1;height:4px;background:#ffffff2e;border-radius:2px;transition:background .12s}
-.motionlanes i.on{background:#c6f578}
-.motionstatus{margin-top:7px;font-size:9px;letter-spacing:1.4px;font-weight:700;color:#cfe6dd;text-align:center;line-height:1.5}
-.motionstatus.warn{color:#ffcf7d}
-.motionstatus.bad{color:#ff9d84}
-.iconbtn.on{background:#c6f578;color:#173b3c;border-color:#c6f578}
-@media(max-width:800px){.motionpanel{display:none}}
+   The look is printed transit ephemera: ink slabs, hard edges, split-flap
+   departure-board numbers and a torn ticket stub. Deliberately no rounded
+   pills and no backdrop blur -- blur is recomposited over a moving 3D scene
+   every frame, and the flat ink reads better over the golden-hour city anyway.
+
+   Typography is entirely local. The game ships offline with zero network
+   requests, so no webfont: Bahnschrift IS DIN 1451, the German transit
+   signage face, and is installed on Windows 10/11; DIN Alternate covers
+   macOS; Arial Narrow is the floor. */
+
+:root{
+  --ink:#0d1017;--ink2:#161c27;--ink3:#1b2330;--ink4:#26303f;
+  --paper:#f1ebdd;--paper2:#aca596;--muted:#5d6673;
+  --signal:#ff4a17;--live:#5ce9c9;--gold:#ffc23d;
+  --display:"Bahnschrift","DIN Alternate","DIN Condensed","Arial Narrow",system-ui,sans-serif;
+  --mono:"Cascadia Mono","SF Mono","Consolas",ui-monospace,monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#a9d3dd;color:var(--paper);font-family:var(--display)}
+canvas{display:block;width:100%;height:100%}
+button{font:inherit;cursor:pointer;border:0;border-radius:0;color:inherit}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.hidden{display:none!important}
+#ui{position:fixed;inset:0;pointer-events:none;user-select:none}
+#ui button{pointer-events:auto}
+
+/* Shared pieces ----------------------------------------------------------- */
+
+.glyph{display:block;width:24px;height:24px;flex:none}
+
+/* Split-flap numerals. One monospace text node, no per-digit markup: the cell
+   grid is a repeating gradient whose period is exactly one character advance
+   (1ch + the letter-spacing), shifted half the spare width so every glyph
+   lands centred in its own flap. That keeps the game's plain textContent
+   writes working untouched. */
+.flapnum{
+  --ls:13px;--gap:4px;
+  display:inline-block;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  letter-spacing:var(--ls);line-height:1;color:var(--paper);
+  background-image:
+    linear-gradient(var(--ink),var(--ink)),
+    repeating-linear-gradient(to right,#ffffff24 0 calc(1ch + var(--ls) - var(--gap)),transparent calc(1ch + var(--ls) - var(--gap)) calc(1ch + var(--ls))),
+    repeating-linear-gradient(to right,var(--ink2) 0 calc(1ch + var(--ls) - var(--gap)),transparent calc(1ch + var(--ls) - var(--gap)) calc(1ch + var(--ls)));
+  background-size:100% 1px,100% 2px,100% 100%;
+  background-position:0 50%,calc((var(--ls) - var(--gap)) / -2) 0,calc((var(--ls) - var(--gap)) / -2) 0;
+  background-repeat:repeat-x;
+}
+
+/* The primary action is a ticket: perforated stub, hard offset shadow. */
+.runbutton{display:flex;align-items:stretch;height:62px;padding:0;background:var(--signal);color:var(--ink);box-shadow:7px 7px 0 #00000047;transition:transform .12s,box-shadow .12s}
+.runbutton::before{content:"";width:12px;flex:none;background:repeating-linear-gradient(to bottom,var(--signal) 0 7px,var(--ink) 7px 14px)}
+.runbutton span{flex:1;display:flex;align-items:center;padding:0 24px;font-size:21px;font-weight:700;font-stretch:condensed;letter-spacing:.1em;white-space:nowrap}
+.runbutton b{display:grid;place-items:center;padding-right:22px}
+.runbutton .glyph{width:24px;height:24px;stroke-width:2.6}
+.runbutton:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 #00000047}
+.runbutton:active{transform:translate(3px,3px);box-shadow:3px 3px 0 #00000047}
+
+.textbutton{padding:13px 16px;background:var(--ink3);color:#ddd6c6;font-family:var(--mono);font-size:10px;letter-spacing:.18em;transition:background .12s,color .12s}
+.textbutton:hover{background:var(--signal);color:var(--ink)}
+
+.key{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 6px;margin-right:3px;background:var(--ink2);border-bottom:2px solid var(--signal);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:0}
+.key.cam{border-bottom-color:var(--live)}
+
+.barcode{display:block;width:34px;height:14px;background:repeating-linear-gradient(to right,currentColor 0 2px,transparent 2px 4px,currentColor 4px 5px,transparent 5px 9px,currentColor 9px 12px,transparent 12px 14px);opacity:.55}
+.hazard{display:block;flex:none;width:10px;align-self:stretch;background:repeating-linear-gradient(135deg,var(--gold) 0 6px,var(--ink) 6px 12px)}
+
+.iconbtn{display:grid;place-items:center;width:42px;height:42px;background:var(--ink);color:var(--paper);transition:background .12s,color .12s}
+.iconbtn .glyph{width:20px;height:20px}
+.iconbtn:hover{background:var(--signal);color:var(--ink)}
+.iconbtn.on{background:var(--live);color:var(--ink)}
+.righttools{position:absolute;right:40px;top:40px;display:flex;gap:6px;z-index:20}
+
+/* Loading ----------------------------------------------------------------- */
+
+#loading{position:fixed;inset:0;display:grid;place-content:center;justify-items:start;padding-left:9vw;background:var(--ink);z-index:100}
+#loading i{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--paper2);font-style:normal}
+#loading b{font-size:clamp(56px,9vw,120px);line-height:.9;font-weight:700;font-stretch:condensed;letter-spacing:-.045em;margin:14px 0 18px;color:var(--paper)}
+#loading em{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--signal);font-style:normal}
+#loading p{max-width:34ch;margin:0 0 8px;font-size:15px;color:var(--paper2)}
+
+/* Start screen ------------------------------------------------------------ */
+
+.menu{position:absolute;inset:0}
+.menu-slab{position:absolute;left:0;top:0;bottom:0;width:min(672px,56vw);background:linear-gradient(100deg,var(--ink) 0 78%,#0d1017f2 100%)}
+.menu-tear{position:absolute;left:min(668px,calc(56vw - 4px));top:0;bottom:0;width:4px;background:repeating-linear-gradient(to bottom,var(--paper) 0 6px,transparent 6px 12px)}
+.regmark{position:absolute;right:40px;top:40px;width:28px;height:28px;opacity:.55}
+.regmark::before,.regmark::after{content:"";position:absolute;background:var(--ink)}
+.regmark::before{left:13px;top:0;width:2px;height:28px}
+.regmark::after{top:13px;left:0;height:2px;width:28px}
+
+.topline{position:absolute;left:64px;top:56px;display:flex;align-items:center;gap:14px}
+.railmark{display:grid;place-items:center;width:34px;height:34px;background:var(--signal);color:var(--ink)}
+.railmark .glyph{width:20px;height:20px;stroke-width:2.4}
+.toplinetext{font-family:var(--mono);font-size:11px;letter-spacing:.22em;line-height:1.6;color:var(--paper2)}
+.toplinetext b{display:block;color:var(--paper);font-weight:400}
+
+.menucontent{position:absolute;left:64px;top:146px;width:min(560px,50vw)}
+.eyebrow{display:flex;gap:2px;margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.18em}
+.eyebrow b{background:var(--signal);color:var(--ink);padding:7px 11px}
+.eyebrow i{background:var(--ink4);color:var(--paper);padding:7px 11px;font-style:normal}
+.eyebrow i+i{color:var(--paper2)}
+
+.title{margin:38px 0 0;font-size:clamp(76px,10.6vw,152px);line-height:.82;letter-spacing:-.045em;font-weight:700;font-stretch:condensed;color:var(--paper)}
+.title span{display:inline-block;color:var(--signal)}
+.title em{font-family:var(--mono);font-size:11px;letter-spacing:.2em;font-style:normal;color:var(--paper2);margin-left:16px}
+
+.tagline{position:relative;margin:34px 0 0;padding-left:20px;font-size:19px;line-height:1.55;color:#ddd6c6;font-stretch:semi-condensed;max-width:340px;text-wrap:pretty}
+.tagline::before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:2px;background:var(--signal)}
+
+.menucontent .runbutton{margin-top:34px}
+
+.bestline{display:flex;align-items:center;gap:16px;margin:32px 0 0}
+.bestline i{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--paper2);font-style:normal;line-height:1.5}
+.bestline strong{--ls:11px;font-size:26px;font-weight:400;padding:10px 0}
+
+/* The mission is a torn stub: the one paper-coloured surface in the layout. */
+.menu-mission{position:absolute;right:76px;top:212px;width:286px;background:var(--paper);color:var(--ink);box-shadow:0 18px 50px #0d101733}
+.stubhead{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:10px;letter-spacing:.2em}
+.stubhead b{color:var(--signal);font-weight:400}
+.stubbody{padding:20px 18px 18px}
+.stubbody p{margin:0;font-size:22px;font-weight:700;font-stretch:condensed;line-height:1.18;letter-spacing:-.01em;text-wrap:pretty}
+.stubtear{height:2px;background:repeating-linear-gradient(to right,#0d101733 0 6px,transparent 6px 12px)}
+.stubfoot{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#5d5748}
+
+/* A vertical ink tab, so the line marker stays legible whether the scene
+   behind it is bright sky or a dark building face. */
+.linemark{position:absolute;right:0;top:50%;transform:translateY(-50%);padding:16px 8px;background:var(--ink);writing-mode:vertical-rl;font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:var(--paper2)}
+
+.bottomline{position:absolute;left:64px;right:40px;bottom:44px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.controls{display:flex;gap:26px;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--paper2)}
+.controls span{display:flex;align-items:center;gap:4px}
+
+/* In-run HUD -------------------------------------------------------------- */
+
+.hud{position:absolute;inset:0}
+
+.scorepanel{position:absolute;left:40px;top:40px;background:var(--ink);box-shadow:6px 6px 0 #0d101740}
+.panelhead{display:flex;align-items:center;gap:9px;padding:8px 14px;background:var(--signal);color:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:700}
+.panelhead b{margin-left:auto;font-weight:400;opacity:.72}
+.scoreheading{display:block;color:var(--ink)}
+.scoreheading .glyph{width:15px;height:15px;stroke-width:2.2}
+.scorevalue{--ls:13px;margin:14px 14px 10px;font-size:30px;padding:11px 0}
+
+.substats{display:flex;gap:2px;margin:0 14px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.distancechip,#tokens{display:flex;align-items:center;gap:7px;background:var(--ink3);padding:7px 10px;color:#ddd6c6}
+.substats .glyph{width:15px;height:15px;stroke-width:2}
+.distancechip>i{color:#7f9aa4}
+.tokenicon{display:block;color:var(--live)}
+.mult{background:var(--signal);color:var(--ink);padding:7px 10px;font-weight:700}
+
+/* Security signal. Hazard tape only once it actually turns. */
+.chase{position:absolute;left:50%;top:40px;transform:translateX(-50%);display:flex;align-items:stretch;background:var(--ink);font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--paper2);transition:color .2s}
+.chase .hazard{background:repeating-linear-gradient(135deg,var(--ink4) 0 6px,var(--ink) 6px 12px)}
+.chase>i[data-icon]{display:grid;place-items:center;padding-left:16px;color:var(--live)}
+.chase .glyph{width:17px;height:17px}
+.chase u{display:flex;align-items:center;padding:9px 0 9px 11px;text-decoration:none}
+.chase .signalbars{display:flex;align-items:flex-end;gap:3px;height:14px;align-self:center;padding:0 16px 0 11px}
+.chase .signalbars i{display:block;width:4px;background:#2d3c44}
+.chase .signalbars i:nth-child(1){height:5px;background:var(--live)}
+.chase .signalbars i:nth-child(2){height:9px}
+.chase .signalbars i:nth-child(3){height:14px}
+.chase.danger{color:var(--paper)}
+.chase.danger .hazard{background:repeating-linear-gradient(135deg,var(--gold) 0 6px,var(--ink) 6px 12px)}
+.chase.danger>i[data-icon]{color:var(--signal)}
+.chase.danger .signalbars i{background:var(--signal)}
+
+.hudbottom{position:absolute;left:40px;right:40px;bottom:40px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+
+.speed{background:var(--ink);padding:13px 16px}
+.route-status{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:10px}
+.route-status>i{display:grid;place-items:center;color:var(--signal)}
+.route-status .glyph{width:16px;height:16px;stroke-width:1.9}
+#zone{display:flex;gap:2px}
+#zone i{display:block;width:26px;height:4px;background:var(--ink4);transition:background .2s,width .2s}
+#zone i.current{background:var(--live);width:44px}
+/* Segmented ladder: the bar underneath is one plain width%, the notches are
+   painted over it so the game's existing style.width write still drives it. */
+.speedtrack{position:relative;width:150px;height:9px;background:var(--ink4);overflow:hidden}
+.speedtrack i{display:block;height:100%;width:10%;background:var(--signal)}
+.speedtrack::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to right,transparent 0 13px,var(--ink) 13px 15px)}
+
+/* Power timers drain downward, so time left reads as a height. */
+.powers{display:flex;gap:8px}
+.power{--remaining:100%;position:relative;width:74px;height:74px;min-width:0;padding:0;border:0;background:var(--ink);overflow:hidden;pointer-events:auto}
+.power::before{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--remaining);background:#ffffff14;background:color-mix(in srgb,var(--accent) 16%,transparent);transition:height .1s linear}
+.power::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent)}
+.powerface{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--accent)}
+.powerface .glyph{width:27px;height:27px}
+.powerface span{font-family:var(--mono);font-size:11px;color:var(--paper);font-variant-numeric:tabular-nums}
+.power.expiring{animation:timerpulse .7s ease-in-out infinite alternate}
+@keyframes timerpulse{to{filter:brightness(1.55)}}
+
+#help{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);display:flex;gap:2px;background:var(--ink);transition:opacity .2s}
+#help>span{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--ink3)}
+#help .glyph{width:20px;height:20px;color:var(--paper2)}
+#help kbd{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#dce9d5}
+.hud:has(.power) #help{opacity:0}
+.hud #zone,.hud #chase{pointer-events:auto}
+
+/* Toast: a stamped notice, gold rule on the leading edge. */
+.toast{position:absolute;left:50%;top:19%;transform:translate(-50%,-10px);display:flex;align-items:center;gap:14px;max-width:80vw;padding:13px 22px 13px 0;background:var(--ink);box-shadow:6px 6px 0 #0d101733;font-size:21px;font-weight:700;font-stretch:condensed;letter-spacing:.06em;opacity:0;transition:opacity .15s,transform .2s}
+.toast::before{content:"";width:6px;align-self:stretch;flex:none;background:var(--gold)}
+.toast>.glyph{width:26px;height:26px;color:var(--gold)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast small{display:block;font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.2em;margin-top:4px;color:var(--gold)}
+.toast b{font-size:21px}
+
+.flash{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 150px var(--signal);opacity:0;transition:opacity .16s}
+.tokenpop{animation:pop .18s}
+@keyframes pop{50%{transform:scale(1.3)}}
+
+/* Pause and end-of-run ---------------------------------------------------- */
+
+/* Flat ink wash plus a fine scanline instead of a backdrop blur: a blur here
+   is recomposited over the live 3D scene on every frame. */
+.modal{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#0d1017cc}
+.modal::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 3px,#00000014 3px 4px)}
+.sheet{position:relative;width:476px;max-width:92vw;max-height:94vh;overflow:auto;background:var(--ink);box-shadow:14px 14px 0 #00000038}
+.hazardbar{height:10px;background:repeating-linear-gradient(135deg,var(--gold) 0 8px,var(--ink) 8px 16px)}
+.sheetinner{padding:32px 38px 28px}
+.sheet .eyebrow{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:2px solid #ffffff1c;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--paper2)}
+.sheet .eyebrow b{background:none;padding:0;color:var(--gold);font-weight:400}
+.sheet h2{margin:22px 0 0;font-size:56px;line-height:.9;font-weight:700;font-stretch:condensed;letter-spacing:-.035em;color:var(--paper)}
+.sheet h2 span{display:block;color:var(--gold)}
+#gameover .sheet h2 span{color:var(--signal)}
+.sheetnote{margin:16px 0 0;font-size:17px;line-height:1.5;color:#b4ae9f;font-stretch:semi-condensed;text-wrap:pretty}
+.sheet .runbutton{width:100%;margin-top:26px}
+.sheetrow{display:flex;gap:2px;margin-top:14px}
+.sheetrow .textbutton{flex:1;text-align:center}
+.sheetfoot{display:flex;align-items:center;justify-content:space-between;margin:24px 0 0;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted)}
+
+.smalllabel{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--paper2)}
+#gameover .sheetinner>.smalllabel{margin-top:26px}
+.resultscore{--ls:15px;margin-top:10px;font-size:34px;padding:13px 0}
+
+/* The run's result prints on paper stock, between two ink bands. */
+.stubsheet{padding:22px 38px 24px;background:var(--paper);color:var(--ink)}
+.resultstats{display:flex;gap:2px}
+.resultstats>div{flex:1;padding:11px 12px;background:#0d10170e;color:#5d5748}
+.resultstats>div.best{background:var(--signal);color:var(--ink)}
+.resultstats strong{display:block;margin-top:6px;font-family:var(--mono);font-size:19px;letter-spacing:0;font-weight:400;color:var(--ink)}
+.stubsheet .stubtear{margin:22px 0 16px}
+.logtitle{color:#5d5748;margin-bottom:12px}
+.missions{display:flex;flex-direction:column;gap:12px}
+.mission{display:block;font-size:15px;font-stretch:semi-condensed;line-height:1.3}
+.mission span{float:right;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink)}
+.missionbar{clear:both;height:5px;background:#0d101718;margin-top:6px}
+.missionbar i{display:block;height:100%;background:var(--signal)}
+.sheetinner.foot{padding-top:22px}
+.textbutton.wide{width:100%;margin-top:14px;text-align:center;background:none;color:var(--paper2)}
+.textbutton.wide:hover{background:none;color:var(--signal)}
+
+/* Camera control ---------------------------------------------------------- */
+
+.motionpanel{position:absolute;right:40px;top:94px;width:186px;background:var(--ink);padding:10px;z-index:20;pointer-events:none}
+.motionpanel canvas{display:block;width:166px;height:124px;background:var(--ink3);object-fit:cover}
+.motionmodes{display:flex;gap:2px;margin-bottom:8px}
+.motionmodes button{flex:1;padding:6px 2px;background:var(--ink3);color:var(--paper2);font-family:var(--mono);font-size:9px;letter-spacing:.14em}
+.motionmodes button[aria-pressed=true]{background:var(--live);color:var(--ink);font-weight:700}
+.motionlanes{display:flex;gap:2px;margin-top:8px}
+.motionlanes i{flex:1;height:5px;background:#2a3340;transition:background .12s}
+.motionlanes i.on{background:var(--live)}
+.motionstatus{margin-top:8px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--live);text-align:center;line-height:1.6}
+.motionstatus.warn{color:var(--gold)}
+.motionstatus.bad{color:var(--signal)}
+.motionpanel #body-meter{display:none;gap:2px;margin-top:8px}
+.body-mode #body-meter{display:flex}
+#body-meter i{flex:1;height:5px;background:#2a3340}
+#body-meter i.on{background:var(--live)}
+.body-help{display:none;font-family:var(--mono);font-size:9px;line-height:1.7;letter-spacing:.08em;color:var(--paper2);text-align:center;margin-top:8px}
+.body-mode .body-help{display:block}
+.motionpanel.body-mode{width:214px}
+.body-mode canvas{width:194px;height:145px}
+.motionpanel .textbutton{width:100%;margin-top:8px;padding:8px 0;text-align:center;font-size:9px}
+
+#body-gate{position:absolute;left:50%;top:22%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;width:308px;max-width:85vw;padding:20px;background:var(--ink);border-left:6px solid var(--live);text-align:center;z-index:21}
+#body-gate strong{font-size:20px;font-weight:700;font-stretch:condensed;letter-spacing:.04em}
+#body-gate small{font-family:var(--mono);font-size:10px;line-height:1.7;letter-spacing:.08em;color:var(--paper2)}
+#body-guide-icon .glyph{width:32px;height:32px;color:var(--live)}
+#body-keyboard{padding:8px 14px;background:var(--ink3);color:var(--live);font-family:var(--mono);font-size:10px;letter-spacing:.16em}
+#body-keyboard:hover{background:var(--live);color:var(--ink)}
+#ui:has(#body-gate:not(.hidden)) #toast{display:none}
+
+#idle-warning{position:absolute;left:50%;bottom:17%;transform:translateX(-50%);display:flex;gap:14px;align-items:center;padding:12px 18px 12px 0;background:var(--ink);border-left:6px solid var(--signal);font-size:17px;font-weight:700;font-stretch:condensed;letter-spacing:.04em}
+#idle-warning>span{padding-left:16px;color:var(--signal)}
+#idle-warning .glyph{width:24px;height:24px}
+#idle-count{font-family:var(--mono);font-size:23px;font-weight:400;color:var(--gold)}
+
+/* Narrower viewports ------------------------------------------------------ */
+
+@media(max-height:780px){
+  .menucontent{top:118px}
+  .title{font-size:clamp(64px,8.4vw,108px);margin-top:28px}
+  .tagline{margin-top:24px;font-size:17px}
+  .menucontent .runbutton{margin-top:26px}
+  .bestline{margin-top:22px}
+  .menu-mission{top:160px}
+  .sheetinner{padding:22px 32px 20px}
+  .sheet h2{font-size:42px;margin-top:16px}
+  .sheetnote{font-size:15px;margin-top:12px}
+  .resultscore{--ls:12px;font-size:28px}
+  .stubsheet{padding:16px 32px 18px}
+  .missions{gap:9px}
+}
+
+@media(max-height:620px){
+  .sheetinner{padding:16px 28px 14px}
+  .sheet h2{font-size:34px;margin-top:12px}
+  .sheetnote{font-size:14px;margin-top:10px}
+  .sheet .runbutton{height:52px;margin-top:16px}
+  .runbutton span{font-size:18px}
+  #gameover .sheetinner>.smalllabel{margin-top:16px}
+  .resultscore{--ls:10px;font-size:24px;padding:9px 0}
+  .stubsheet{padding:14px 28px 16px}
+  .stubsheet .stubtear{margin:14px 0 12px}
+  .missions{gap:7px}
+  .mission{font-size:13px}
+  .linemark{display:none}
+}
+
+/* Small windows. The start screen is absolutely positioned for the big
+   layout, so below these heights it has to give things up in order rather
+   than let blocks collide. */
+@media(max-height:560px){
+  .topline{left:20px;top:16px;gap:10px}
+  .railmark{width:28px;height:28px}
+  .railmark .glyph{width:16px;height:16px}
+  .toplinetext{font-size:9px;letter-spacing:.18em}
+  .menucontent{top:64px;left:20px}
+  .eyebrow{font-size:9px}
+  .eyebrow b,.eyebrow i{padding:5px 8px}
+  .title{font-size:clamp(40px,11vw,72px);margin-top:18px}
+  .tagline{font-size:14px;margin-top:16px;padding-left:14px}
+  .menucontent .runbutton{margin-top:18px;height:48px}
+  .runbutton span{font-size:17px;padding:0 18px}
+  .runbutton b{padding-right:16px}
+  .bestline{margin-top:16px;gap:11px}
+  .bestline strong{--ls:7px;font-size:18px;padding:7px 0}
+  .menu-mission{top:64px;right:20px;width:236px}
+  .stubbody{padding:14px 14px 12px}
+  .stubbody p{font-size:17px}
+  .bottomline{bottom:14px;left:20px}
+  .controls{gap:9px;font-size:8px}
+  .key{min-width:20px;height:20px;font-size:9px;padding:0 4px}
+}
+@media(max-height:430px){
+  .tagline,.bestline,.menu-mission{display:none}
+  .menucontent{top:52px}
+  .title{font-size:clamp(34px,8.4vw,54px);margin-top:14px}
+  .menucontent .runbutton{margin-top:14px;height:42px}
+  .runbutton span{font-size:15px}
+  .topline{top:12px}
+}
+
+@media(max-width:860px){
+  .righttools{right:16px;top:16px;gap:4px}
+  .iconbtn{width:36px;height:36px}
+  .menu-slab{width:100%;background:#0d1017e8}
+  .menu-tear{display:none}
+  .regmark{display:none}
+  .topline{left:20px;top:20px}
+  .menucontent{left:20px;right:20px;top:104px;width:auto}
+  .title{font-size:clamp(56px,15vw,88px)}
+  .title em{display:none}
+  .tagline{font-size:15px;max-width:none}
+  .menu-mission{display:none}
+  .linemark{display:none}
+  .bottomline{left:20px;right:20px;bottom:20px}
+  .controls{gap:10px;font-size:9px;flex-wrap:wrap}
+  .scorepanel{left:16px;top:16px}
+  .scorevalue{--ls:8px;font-size:22px;margin:10px 10px 8px;padding:8px 0}
+  .panelhead{padding:6px 10px;font-size:9px}
+  .substats{margin:0 10px 10px;font-size:10px}
+  .distancechip,#tokens,.mult{padding:5px 7px;gap:5px}
+  .chase{left:auto;right:16px;top:64px;transform:none}
+  .chase u{display:none}
+  .hudbottom{left:16px;right:16px;bottom:16px}
+  .speedtrack{width:104px}
+  #zone i{width:14px}
+  #zone i.current{width:24px}
+  .power{width:58px;height:58px}
+  .powerface .glyph{width:23px;height:23px}
+  .powers{gap:5px}
+  #help{bottom:15%}
+  #help>span{padding:8px 10px;gap:6px}
+  .motionpanel:not(.hidden){display:block;right:16px;top:104px;width:160px}
+  .motionpanel canvas{width:140px;height:105px}
+  .motionpanel.body-mode{width:180px}
+  .body-mode canvas{width:160px;height:120px}
+  #body-gate{top:auto;bottom:18%;width:276px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .power.expiring,.tokenpop{animation:none}
+  .toast,.runbutton{transition:none}
+}

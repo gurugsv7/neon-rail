@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root{
+      --display:"Bahnschrift","DIN Alternate","Arial Narrow",sans-serif;
+      --mono:"Cascadia Mono","Consolas",ui-monospace,monospace;
+    }
+    body{margin:0;font-family:var(--display);}
+    a{color:#ff4a17;} a:hover{color:#ffc23d;}
+  </style>
+</helmet>
+
+<div style="position:relative;width:1440px;height:900px;overflow:hidden;background:linear-gradient(#a9d3dd 0%,#cfe0d2 44%,#f4d4a0 78%,#f0bc84 100%);font-family:var(--display);color:#f1ebdd">
+
+  <div style="position:absolute;left:0;right:0;bottom:170px;height:330px;display:flex;align-items:flex-end;gap:14px;padding:0 40px;opacity:.5">
+    <div style="width:120px;height:210px;background:#6f8f9b"></div>
+    <div style="width:86px;height:290px;background:#5d7f8d"></div>
+    <div style="width:150px;height:160px;background:#7d9aa3"></div>
+    <div style="width:104px;height:250px;background:#557684"></div>
+    <div style="width:132px;height:195px;background:#6f8f9b"></div>
+    <div style="width:92px;height:305px;background:#4e6e7d"></div>
+    <div style="width:160px;height:150px;background:#83a0a8"></div>
+    <div style="width:110px;height:235px;background:#5d7f8d"></div>
+    <div style="width:140px;height:275px;background:#527383"></div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:170px;background:linear-gradient(#9d8468,#7d6750)"></div>
+
+  <!-- Flat ink wash, no gaussian blur: keeps the frame cheap over a moving scene. -->
+  <div style="position:absolute;inset:0;background:#0d1017cc"></div>
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(to bottom,#0000 0 3px,#00000014 3px 4px)"></div>
+
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:476px;background:#0d1017;box-shadow:14px 14px 0 #00000038">
+    <div style="height:10px;background:repeating-linear-gradient(135deg,#ffc23d 0 8px,#0d1017 8px 16px)"></div>
+
+    <div style="padding:34px 40px 30px">
+      <div style="display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:#aca596">
+        <span>SERVICE 07 — EAST LINE</span><span style="color:#ffc23d">HELD</span>
+      </div>
+      <div style="height:2px;background:#ffffff1c;margin:14px 0 22px"></div>
+
+      <div style="font-size:66px;line-height:.9;font-weight:700;font-stretch:condensed;letter-spacing:-.035em">SERVICE<br><span style="color:#ffc23d">HELD.</span></div>
+      <div style="font-size:17px;color:#b4ae9f;margin-top:16px;line-height:1.5;font-stretch:semi-condensed;text-wrap:pretty">The city keeps moving without you.<br>It will wait, briefly.</div>
+
+      <div style="display:flex;align-items:stretch;height:62px;margin-top:28px;box-shadow:7px 7px 0 #00000045">
+        <div style="width:12px;background:repeating-linear-gradient(to bottom,#ff4a17 0 7px,#0d1017 7px 14px)"></div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#ff4a17;color:#0d1017">
+          <span style="font-size:21px;font-weight:700;letter-spacing:.1em;font-stretch:condensed">RESUME RUN</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d1017" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 5 7 7-7 7m7-14 7 7-7 7"/></svg>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:2px;margin-top:14px">
+        <div style="flex:1;text-align:center;padding:13px 0;background:#1b2330;color:#ddd6c6;font-family:var(--mono);font-size:10px;letter-spacing:.18em">RESTART</div>
+        <div style="flex:1;text-align:center;padding:13px 0;background:#1b2330;color:#ddd6c6;font-family:var(--mono);font-size:10px;letter-spacing:.18em">MAIN MENU</div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:24px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#5d6673">
+        <span>ESC TO RESUME</span>
+        <span style="display:flex;gap:2px;align-items:flex-end">
+          <i style="display:block;width:2px;height:13px;background:#2a3340"></i><i style="display:block;width:4px;height:13px;background:#2a3340"></i><i style="display:block;width:2px;height:13px;background:#2a3340"></i><i style="display:block;width:5px;height:13px;background:#2a3340"></i><i style="display:block;width:2px;height:13px;background:#2a3340"></i><i style="display:block;width:3px;height:13px;background:#2a3340"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
