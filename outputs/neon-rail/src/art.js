@@ -1,3 +1,5 @@
+import {securityDrone} from './security-drone.js';
+import {ICON_PATHS} from './icons.js';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
@@ -7,6 +9,7 @@ import {cityBuilding,buildingNames,buildingSize,BUILDING_SCALE,BUILDING_TINTS,CO
 import {treeModel,treeNames} from './tree-asset.js';
 import {railTile,RAIL_GAUGE,RAIL_TILE_LENGTH} from './rail-asset.js';
 import {cityModel} from './city-asset.js';
+import {addRailArchitecture} from './rail-architecture.js';
 export {T};
 const geometries=new Map(),materials=new Map();
 export function mat(color,extra={}){const key=color+JSON.stringify(extra);if(!materials.has(key))materials.set(key,new T.MeshStandardMaterial({color,roughness:.76,...extra}));return materials.get(key);}
@@ -57,15 +60,24 @@ export function animateCourier(c,p,t,speed,board=false){const run=t*speed*.72,ai
   c.arms.forEach((a,i)=>{a.rotation.x=slide?-1.4:air?-1.3:(i===0?-swing:swing);a.rotation.z=(i===0?1:-1)*.1;});
   c.legs.forEach(({leg,shin},i)=>{leg.rotation.x=slide?(i===0?-1.3:-.6):air?(i===0?-.7:.5):(i===0?swing:-swing);shin.rotation.x=slide?1.3:air?.8:Math.max(0,(i===0?-swing:swing))*.9;});
 }
-export function drone(){const g=new T.Group();sphere(g,.38,0,0,0,palette.dark,1,.65,1);box(g,.36,.09,.14,0,.01,-.34,mat(0xff745c,{emissive:0xff3e25,emissiveIntensity:1}),true);for(const x of [-.6,.6]){box(g,.9,.06,.09,x*.5,.05,0,palette.steel);const ring=new T.Mesh(new T.TorusGeometry(.29,.045,6,18),mat(palette.cream));ring.rotation.x=Math.PI/2;ring.position.set(x,.04,0);g.add(ring);box(g,.43,.025,.075,x,.04,0,palette.dark);}return g;}
+export function drone(){return securityDrone();}
 export function tokenModel(){const g=new T.Group();const body=cyl(g,.22,.22,.085,0,0,0,mat(0xc5f58a,{metalness:.45,roughness:.25,emissive:0x8dcf43,emissiveIntensity:.35}),6);body.rotation.x=Math.PI/2;const inset=cyl(g,.115,.115,.09,0,0,0,0x26766a,6);inset.rotation.x=Math.PI/2;box(g,.035,.14,.10,0,0,0,0xecffd1);return g;}
 export const POWER_COLORS={magnet:0x64dddd,boost:0xffcf69,shield:0x7caaff,board:0xe9a1ef};
-export function powerModel(type){const g=new T.Group(),color=POWER_COLORS[type],m=mat(color,{emissive:color,emissiveIntensity:.25,metalness:.25,roughness:.3});const ring=new T.Mesh(new T.TorusGeometry(.55,.04,6,24),m);g.add(ring);
-  if(type==='magnet'){const u=new T.Mesh(new T.TorusGeometry(.25,.09,8,16,Math.PI),m);u.rotation.z=Math.PI;g.add(u);box(g,.17,.26,.17,-.25,.14,0,m,true);box(g,.17,.26,.17,.25,.14,0,m,true);}
-  else if(type==='boost'){for(const x of [-.16,.16]){const a=box(g,.08,.47,.1,x,0,0,m,true);a.rotation.z=-.5;} }
-  else if(type==='shield'){const s=sphere(g,.31,0,0,0,m,1,1.15,.3);}
-  else{box(g,.66,.19,.19,0,0,0,m,true);for(const x of [-.2,.2])sphere(g,.08,x,-.15,0,0xffffff);}
-  return g;}
+const badgeMaterials=new Map();
+function badgeMaterial(type,color){
+  if(badgeMaterials.has(type))return badgeMaterials.get(type);
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=128;
+  const ctx=canvas.getContext('2d');ctx.fillStyle='#173d49';ctx.beginPath();ctx.arc(64,64,60,0,Math.PI*2);ctx.fill();
+  ctx.save();ctx.translate(22,22);ctx.scale(3.5,3.5);ctx.strokeStyle='#'+color.toString(16);ctx.lineWidth=1.9;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke(new Path2D(ICON_PATHS[type]));ctx.restore();
+  const map=new T.CanvasTexture(canvas);map.colorSpace=T.SRGBColorSpace;
+  const material=new T.MeshBasicMaterial({map,transparent:true,side:T.DoubleSide});badgeMaterials.set(type,material);return material;
+}
+export function powerModel(type){
+  const g=new T.Group(),color=POWER_COLORS[type],m=mat(color,{emissive:color,emissiveIntensity:.45,metalness:.25,roughness:.3});
+  const ring=new T.Mesh(new T.TorusGeometry(.55,.045,8,32),m);g.add(ring);
+  const badge=new T.Mesh(new T.PlaneGeometry(1.04,1.04),badgeMaterial(type,color));g.add(badge);
+  return g;
+}
 export function trainModel(ramped){const supplied=ramped?importedRampTrain():importedTrain();if(supplied)return supplied;const g=new T.Group();box(g,2.65,3.8,13,0,2.25,0,palette.teal,true);box(g,2.7,.52,12.5,0,1.35,0,palette.cream,true);box(g,2.5,.17,12.6,0,4.18,0,palette.cream,true);box(g,2.32,.34,12.5,0,.29,0,palette.dark,true);
   for(const z of [-6.55,6.55]){box(g,2.38,3.25,.25,0,2.3,z,palette.teal,true);box(g,2.1,1.12,.045,0,3.08,z+Math.sign(z)*.14,0x254857,true);box(g,.15,1.2,.06,0,3.06,z+Math.sign(z)*.17,palette.teal);box(g,1.7,.23,.045,0,3.91,z+Math.sign(z)*.15,signTexture('E7 / EAST', '#243f48','#e2efb2',256));for(const x of [-.85,.85])box(g,.32,.2,.07,x,1.15,z+Math.sign(z)*.17,mat(0xffedb8,{emissive:0xffd285,emissiveIntensity:1.8}),true);box(g,2,.12,.18,0,.65,z+Math.sign(z)*.13,palette.coral,true);}
   for(const side of [-1,1]){for(let z=-4.8;z<=4.8;z+=1.6){box(g,.035,1.12,1.17,side*1.334,3.08,z,0x294d5b,true);box(g,.04,.04,1.06,side*1.36,2.66,z,0x7fb5bb);}for(const z of [-4.2,4.2]){box(g,.05,2.65,.68,side*1.34,1.85,z,palette.cream);box(g,.055,1.1,.43,side*1.38,2.85,z,0x2e5560);}for(const z of [-4.5,-3.4,3.4,4.5]){const w=cyl(g,.32,.32,.18,side*1.1,.25,z,0x293a3e,12);w.rotation.z=Math.PI/2;}}
@@ -149,17 +161,15 @@ export function sceneryChunk(index,length=48){const g=new T.Group(),houses=[],ra
     // chosen to miss the lamps (-16, 10), signal (-12), cones (-9, 6, 19) and
     // bin (-2), and the station zone is skipped so nothing grows through the
     // platform canopy.
-    if(index%2===0&&zone!==1)for(const [k,slot] of [-21,2,15].entries()){
+    if(index%2===0&&zone!==1&&zone!==3)for(const [k,slot] of [-21,2,15].entries()){
       const tree=treeModel(TREES[Math.floor(random()*TREES.length)]);
       const z=slot+random()*2-1,x=side*(6.25+random()*.3);
       if(tree){tree.scale.setScalar(.78+random()*.28);tree.position.set(x,-.1,z);tree.rotation.y=random()*6.28;g.add(tree);}
       else{cyl(g,.17,.25,3,x,1.5,z,0x826c51);sphere(g,1.3,x,3.4,z,0x7f9d65,1,1.25,1);}
     }
-    if(zone===1){box(g,2.4,.7,length-4,side*6.4,.2,0,0xd3cbb4);for(const z of [-17,0,17]){box(g,.22,4.3,.22,side*7.05,2.25,z,0x3f7879);box(g,1.5,.12,3.2,side*6.2,1.0,z,0x9c7554,true);box(g,.15,.7,3.2,side*6.85,1.37,z,0x9c7554,true);}box(g,3.4,.22,length-2,side*6.4,4.4,0,0x2b7576);box(g,2.7,.12,length-3,side*6.4,4.25,0,0xf2d9ae);const s=box(g,3.6,.72,.10,side*6.3,3.68,4,signs.station);}
-    if(zone===3){box(g,.5,13.3,length,side*8,6.55,0,0x78928e);for(let z=-22;z<24;z+=12){box(g,.6,13.3,.8,side*7.7,6.65,z,0x597573);box(g,.08,.2,2,side*7.38,3.2,z,mat(0xffe0a1,{emissive:0xffc375,emissiveIntensity:.5}));}box(g,1.6,.06,length,side*6.6,13.2,0,0x9ba79a);}
   }
   // Catenary gantries, suspended signs, and railway cables.
-  for(const z of [-20,20]){for(const x of [-5.35,5.35]){box(g,.16,11.3,.18,x,5.65,z,0x5e7d7c);box(g,.45,.2,.55,x,.1,z,0x71827d);}box(g,11,.14,.18,0,11.2,z,0x5e7d7c);for(const x of [-3.25,0,3.25]){box(g,.035,.6,.035,x,10.9,z,0x466867);cyl(g,.10,.10,.23,x,10.65,z,0xceb48b);}}
+  if(zone!==3)for(const z of [-20,20]){for(const x of [-5.35,5.35]){box(g,.16,11.3,.18,x,5.65,z,0x5e7d7c);box(g,.45,.2,.55,x,.1,z,0x71827d);}box(g,11,.14,.18,0,11.2,z,0x5e7d7c);for(const x of [-3.25,0,3.25]){box(g,.035,.6,.035,x,10.9,z,0x466867);cyl(g,.10,.10,.23,x,10.65,z,0xceb48b);}}
   for(const x of [-3.25,0,3.25])box(g,.018,.018,length,x,10.55,0,0x668785);
   // Signals sit at 5.2, not the old 4.4: the kit head is far chunkier than the
   // thin procedural post it replaced and at 4.4 it reached into the volume the
@@ -167,15 +177,14 @@ export function sceneryChunk(index,length=48){const g=new T.Group(),houses=[],ra
   // The station sign keeps its rendered typography; only the signal posts are
   // swapped for the kit's, which carry a full three-lamp head for fewer
   // triangles than the two spheres they replace.
-  if(index%3===0){box(g,3.7,.75,.10,0,10,-20,signs.station);
+  if(index%3===0){if(zone!==3)box(g,3.7,.75,.10,0,10,-20,signs.station);
     for(const x of [-5.2,5.2]){const signal=cityModel('traffic-light');
       if(signal){signal.scale.setScalar(6);signal.position.set(x,-.1,-12);signal.rotation.y=-Math.sign(x)*Math.PI/2;g.add(signal);}
       else{cyl(g,.06,.06,2.9,x,1.45,-12,0x4f7472);box(g,.3,.8,.26,x,2.8,-12,0x274b53,true);sphere(g,.08,x,3.03,-11.85,mat(0xbaf17c,{emissive:0x98f85b,emissiveIntensity:.9}));sphere(g,.08,x,2.72,-11.85,0x49605b);}}}
-  if(index%4===2){box(g,18,.65,6,0,13.6,0,0xb9baaa);for(const x of [-8.1,8.1])box(g,.7,13.5,5,x,6.65,0,0x869b91);for(const z of [-2.7,2.7]){box(g,18,.08,.08,0,14.75,z,0x6d8c89);for(let x=-8;x<9;x+=1.3)box(g,.05,1,.05,x,14.2,z,0x6d8c89);}}
-  if(zone===3)for(const z of [-17,0,17])box(g,16,.3,10,0,13.45,z,0x93a69a);
   if(index%3===2){const wall=box(g,.2,2.2,8,-7.48,1.1,8,0x237d7a);box(g,.03,1.3,6,-7.36,1.1,8,signs.art);}
   // Houses carry their own textured material, so they join the chunk after the
   // static merge instead of being baked into it.
+  addRailArchitecture(g,index,{T,box,cyl,sphere,mat,signTexture});
   const chunk=staticBatch(g);for(const house of houses)chunk.add(house);return chunk;
 }
 export function shadowTexture(){const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d'),r=ctx.createRadialGradient(32,32,2,32,32,31);r.addColorStop(0,'rgba(15,37,42,.4)');r.addColorStop(1,'rgba(15,37,42,0)');ctx.fillStyle=r;ctx.fillRect(0,0,64,64);return new T.CanvasTexture(c);}

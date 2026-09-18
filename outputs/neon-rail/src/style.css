@@ -216,9 +216,10 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
 /* Flat ink wash plus a fine scanline instead of a backdrop blur: a blur here
    is recomposited over the live 3D scene on every frame. */
-.modal{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#0d1017cc}
+.modal{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#0d1017cc;pointer-events:auto}
 .modal::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 3px,#00000014 3px 4px)}
-.sheet{position:relative;width:476px;max-width:92vw;max-height:94vh;overflow:auto;background:var(--ink);box-shadow:14px 14px 0 #00000038}
+.sheet{position:relative;display:flex;flex-direction:column;width:476px;max-width:92vw;max-height:92vh;overflow:hidden;background:var(--ink);box-shadow:14px 14px 0 #00000038}
+.sheet>*{flex:none}
 .hazardbar{height:10px;background:repeating-linear-gradient(135deg,var(--gold) 0 8px,var(--ink) 8px 16px)}
 .sheetinner{padding:32px 38px 28px}
 .sheet .eyebrow{display:flex;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:2px solid #ffffff1c;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--paper2)}
@@ -237,7 +238,13 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .resultscore{--ls:15px;margin-top:10px;font-size:34px;padding:13px 0}
 
 /* The run's result prints on paper stock, between two ink bands. */
-.stubsheet{padding:22px 38px 24px;background:var(--paper);color:var(--ink)}
+.stubsheet{padding:20px 38px 18px;background:var(--paper);color:var(--ink)}
+/* The one part of the sheet allowed to shrink and scroll. */
+.logsheet{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 38px 18px;background:var(--paper);color:var(--ink)}
+.logsheet::before{content:"";display:block;height:2px;margin-bottom:14px;background:repeating-linear-gradient(to right,#0d101733 0 6px,transparent 6px 12px)}
+.logsheet::-webkit-scrollbar{width:6px}
+.logsheet::-webkit-scrollbar-thumb{background:#0d101740}
+.logsheet::-webkit-scrollbar-track{background:#0d10170d}
 .resultstats{display:flex;gap:2px}
 .resultstats>div{flex:1;padding:11px 12px;background:#0d10170e;color:#5d5748}
 .resultstats>div.best{background:var(--signal);color:var(--ink)}
@@ -249,7 +256,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .mission span{float:right;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink)}
 .missionbar{clear:both;height:5px;background:#0d101718;margin-top:6px}
 .missionbar i{display:block;height:100%;background:var(--signal)}
-.sheetinner.foot{padding-top:22px}
+.sheetinner.foot{padding:20px 38px 24px}
 .textbutton.wide{width:100%;margin-top:14px;text-align:center;background:none;color:var(--paper2)}
 .textbutton.wide:hover{background:none;color:var(--signal)}
 
@@ -384,7 +391,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
   .power{width:58px;height:58px}
   .powerface .glyph{width:23px;height:23px}
   .powers{gap:5px}
-  #help{bottom:15%}
+  #help{bottom:5%}
   #help>span{padding:8px 10px;gap:6px}
   .motionpanel:not(.hidden){display:block;right:16px;top:104px;width:160px}
   .motionpanel canvas{width:140px;height:105px}

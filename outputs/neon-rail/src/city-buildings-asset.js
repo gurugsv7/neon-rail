@@ -19,8 +19,7 @@ export const CONTAINER_TINT=8;
 const CULL=246;
 const models=new Map(),materials=[];
 export async function prepareCityBuildingAsset(){
-  const bytes=Uint8Array.from(atob(buildingData),c=>c.charCodeAt(0));
-  const gltf=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  const gltf=await new GLTFLoader().loadAsync(buildingData);
   gltf.scene.updateMatrixWorld(true);
   let source=null;
   for(const node of gltf.scene.children){

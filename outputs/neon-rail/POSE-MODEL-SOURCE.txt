@@ -1,0 +1,5 @@
+Pose Landmarker Lite — Google MediaPipe
+Model: https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task
+Guide: https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker/web_js
+Overview/model card links: https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker/index
+Downloaded 2026-09-15. Bundled locally; no camera video is sent to Google.

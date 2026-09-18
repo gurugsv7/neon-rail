@@ -2,19 +2,30 @@ NEON RAIL
 An original three-lane 3D arcade runner set on Meridian's golden-hour East Line.
 
 MOTION CONTROL (CAMERA)
-Press C, or the ◉ button, to steer with your body instead of the keys.
-Hold still for two seconds while it finds its centre, then:
-  lean or step LEFT / RIGHT  change lane
-  lift your head             jump
-  duck your head             slide
-The keyboard keeps working the whole time, and R re-centres if you shift
-in your seat. The camera is only opened when you ask for it, nothing is
-recorded, and no video ever leaves the machine -- the tracker runs
-entirely inside this file with no network access.
+Press C or the camera button. Full body is the default camera mode.
+Fit your head, knees and ankles inside the dashed frame. The preview guides
+you left/right/back/closer; hold still for calibration. Clear enough space
+around you to jog in place comfortably.
+  alternate knee/ankle lifts  jog to move forward
+  lean LEFT / RIGHT          move one lane; neutral rearms the next gesture
+  raise BOTH hands           jump
+  squat                      slide
+Standing while fully tracked stops the courier, but security closes in.
+Six seconds of accumulated standing triggers capture. Jogging pulls security
+back; tracking loss freezes the scene and pursuit with Return to position.
+Reposition and complete calibration to continue. Three alternating lifts
+start movement, with a brief allowance between steps.
+This recognises leg movement, not exercise intensity or verified running.
+
+Choose Head only for seated controls (lean, head rise, head duck), or Use
+keyboard to turn the camera off. R re-calibrates. Camera processing is local;
+no video is uploaded or recorded. The lightweight pose model loads only when
+full-body mode is enabled. Pose estimates are not Kinect depth measurements.
 
 PLAY
-Double-click PLAY.cmd or open NEON RAIL.html in Chrome, Edge, or Firefox.
-The game is fully offline. No installation, account, or server is required.
+Double-click PLAY.cmd (Node.js required), or run npm start in this folder.
+Open http://127.0.0.1:8765 in Chrome, Edge, or Firefox. Keep this folder together: dist/ contains scripts and binary assets. Direct file:// launch is no longer supported. No account or internet connection is required after downloading the files.
+To rebuild from source: npm install, then npm run build. npm run dev builds and serves.
 Press F or the fullscreen icon for fullscreen.
 
 CONTROLS
@@ -47,8 +58,8 @@ Five lifetime delivery missions each add +1 to your base score multiplier.
 Best score and mission progress are saved in this browser on this device.
 Private browsing or clearing browser data may remove saved progress.
 
-All character models, scenery, signage, animation and sounds are original
-and generated in code. Rendering uses Three.js under the included MIT license.
+The game combines supplied GLB models with procedural scenery and sound.
+Rendering uses Three.js under the included MIT license.
 
 SOURCE
 src/core.js: movement physics, pattern validation, save data, missions.
@@ -56,3 +67,7 @@ src/art.js: procedural models, character rig, environment batching.
 src/game.js: world lifecycle, collision, camera, feedback, UI and game states.
 src/audio.js: procedural Web Audio soundtrack and sound effects.
 src/style.css and src/shell.html: game interface.
+
+SECURITY CAPTURE
+The four-fan interceptor brakes, lowers a recovery harness, latches it,
+tensions its winch and carries the courier away before results appear.

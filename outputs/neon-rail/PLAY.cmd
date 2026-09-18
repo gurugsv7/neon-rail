@@ -1,2 +1,4 @@
 @echo off
-start "" "%~dp0NEON RAIL.html"
+cd /d "%~dp0"
+node server.mjs --open
+pause

@@ -11,8 +11,7 @@ const GLOW={
 };
 const models=new Map();
 export async function prepareCityAsset(){
-  const bytes=Uint8Array.from(atob(cityData),c=>c.charCodeAt(0));
-  const gltf=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  const gltf=await new GLTFLoader().loadAsync(cityData);
   gltf.scene.updateMatrixWorld(true);
   for(const node of gltf.scene.children){
     const parts=[],glowing=GLOW[node.name]||{};

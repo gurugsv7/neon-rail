@@ -1,108 +1,66 @@
+import {createBodySignal} from './body-signal.js';
 import {prepareTracker,requestHead,attachStream,onHeadFromStream,closeTracker} from './motion-tracker.js';
 import {createMotionSignal} from './motion-signal.js';
 
-// Camera steering: owns the webcam, runs detection on a throttled loop, and
-// turns what it sees into the same lane/jump/duck calls the keyboard makes.
-//
-// Detection runs at DETECT_HZ, not per frame. One inference costs ~8ms, which
-// would eat half the 16.7ms frame budget if it ran every frame; a lane change
-// is a deliberate gesture that nobody performs in under ~150ms, so sampling at
-// 12Hz loses nothing and costs under a tenth of the CPU.
-const DETECT_HZ=12;
-
 export function createMotionControl(game,ui){
-  const video=document.createElement('video');
-  video.playsInline=true;video.muted=true;
-  let stream=null,timer=null,signal=null,active=false,streaming=false;
-  let status='off',lastHead=null,calibrateUntil=0;
-
-  // Called on every detection, not only when the status word changes: the
-  // panel has a live self-view and a lane indicator to repaint, and gating this
-  // on a status change froze the preview the moment tracking settled.
-  function report(next,detail){
-    status=next;
-    ui?.(next,detail,lastHead);
-  }
-
+  const video=document.createElement('video');video.playsInline=true;video.muted=true;
+  let stream=null,timer=null,signal=null,active=false,starting=false,streaming=false;
+  let mode='body',body=createBodySignal(),bodyRunning=false,bodyReady=false,bodySeen=0;
+  let status='off',lastHead=null,generation=0,lastSeen=0,calibration=[],calibrationStart=0;
+  const report=(next,detail)=>{status=next;ui?.(next,detail,lastHead);};
+  const centreAgain=()=>{calibration=[];calibrationStart=0;signal?.recentre();body.reset();bodyReady=false;bodyRunning=false;};
   async function enable(){
-    if(active)return true;
+    if(active||starting)return active;
+    starting=true;const ticket=++generation;
     try{
-      report('starting');
-      // Asked for only on a deliberate click, never on load.
-      // The browser's permission prompt takes focus, and the game pauses on
-      // blur; flag it so agreeing to the camera does not stop the run.
-      game.awaitingCamera=true;
-      stream=await navigator.mediaDevices.getUserMedia({
-        video:{width:{ideal:640},height:{ideal:480},facingMode:'user'},audio:false});
-      game.awaitingCamera=false;
-      video.srcObject=stream;await video.play();
-      report('loading');
-      await prepareTracker();
-      signal=createMotionSignal();
-      active=true;
-      // Preferred path: the worker pulls frames itself, so nothing about
-      // detection touches the main thread. Falls back to posting frames.
-      onHeadFromStream(onHead);
-      streaming=attachStream(stream.getVideoTracks()[0],1000/DETECT_HZ);
-      // A short hold-still window sets the centre and the head-width unit, so
-      // thresholds mean the same thing wherever the player is sitting.
-      calibrateUntil=performance.now()+2200;
-      signal.recentre();
-      report('calibrating');
-      if(!streaming)timer=setInterval(step,1000/DETECT_HZ);
+      report('starting');game.awaitingCamera=true;
+      const acquired=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:640},height:{ideal:480},frameRate:{ideal:30,max:30},facingMode:'user'},audio:false});
+      if(ticket!==generation){acquired.getTracks().forEach(t=>t.stop());return false;}
+      stream=acquired;game.awaitingCamera=false;video.srcObject=stream;await video.play();
+      if(ticket!==generation)return false;
+      report('loading');await prepareTracker(mode);if(ticket!==generation)return false;
+      signal=createMotionSignal();active=true;starting=false;lastSeen=0;centreAgain();
+      onHeadFromStream((head,meta)=>{if(ticket===generation)onHead(head,meta);});
+      streaming=attachStream(stream.getVideoTracks()[0],1000/(mode==='body'?18:24));
+      stream.getVideoTracks()[0].addEventListener('ended',()=>{if(ticket===generation){if(mode==='body'&&game.state==='playing')game.pause();disable();report('error','unavailable');}},{once:true});
+      report('calibrating');if(!streaming)timer=setInterval(step,1000/(mode==='body'?18:24));
       return true;
-    }catch(err){
-      game.awaitingCamera=false;
-      disable();
-      report('error',err&&err.name==='NotAllowedError'?'denied':'unavailable');
-      return false;
+    }catch(err){if(ticket!==generation)return false;disable();report('error',err?.name==='NotAllowedError'?'denied':'unavailable');return false;}
+  }
+  function step(){if(active&&!document.hidden){const ticket=generation;requestHead(video,(head,meta)=>{if(ticket===generation)onHead(head,meta);});}}
+  function onHead(head,meta){
+    if(!active||document.hidden)return;
+    const now=performance.now();lastHead=head;
+    if(meta?.capturedAt&&performance.timeOrigin+now-meta.capturedAt>350)return;
+    if(mode==='body'){
+      const out=body.update(head?.points,now);bodyRunning=out.running;bodyReady=!!out.ready;bodySeen=now;report(out.guide,out);
+      if(out.ready){for(const intent of out.intents){if(intent.type==='lane')game.steer(intent.direction);else if(intent.type==='jump')game.hop();else if(intent.type==='duck')game.crouch();}
+      if(out.posture==='duck'&&game.accepting()&&game.player.grounded&&game.player.slide<.18)game.player.duck();}return;
     }
-  }
-
-  function step(){
-    if(!active)return;
-    // requestHead declines while a frame is still out, so a slow inference
-    // throttles itself rather than building a backlog.
-    requestHead(video,onHead);
-  }
-
-  function onHead(head){
-    if(!active)return;
-    const now=performance.now();
-    lastHead=head;
-    if(!head){report('searching');signal.update(null,now);return;}
-    if(now<calibrateUntil){
-      // Keep re-seating the centre while they hold still, so calibration ends
-      // on where they actually settled.
-      signal.calibrate(head);
-      report('calibrating');
-      return;
+    if(!head){signal.update(null,now);if(now-lastSeen>900){centreAgain();report('searching');}return;}
+    if(lastSeen&&now-lastSeen>900)centreAgain();lastSeen=now;
+    if(!signal.calibrated){
+      if(!calibrationStart)calibrationStart=now;
+      calibration.push(head);if(calibration.length>24)calibration.shift();
+      const mean=calibration.reduce((a,h)=>({x:a.x+h.x,y:a.y+h.y,unit:a.unit+h.unit}),{x:0,y:0,unit:0});
+      for(const k in mean)mean[k]/=calibration.length;
+      const spread=Math.max(...calibration.map(h=>Math.hypot(h.x-mean.x,h.y-mean.y)))/mean.unit;
+      if(spread>.16){calibration=[head];calibrationStart=now;}
+      else if(now-calibrationStart>=850&&calibration.length>=8){signal.calibrate({...head,...mean});calibration=[];}
+      report('calibrating');return;
     }
-    const out=signal.update(head,now);
-    report('tracking');
-    for(const intent of out.intents){
-      if(intent.type==='lane')game.steerTo(intent.lane);
-      else if(intent.type==='jump')game.hop();
-      else if(intent.type==='duck')game.crouch();
-    }
+    const out=signal.update(head,now);report('tracking');
+    for(const intent of out.intents){if(intent.type==='lane')game.steer(intent.direction);else if(intent.type==='jump')game.hop();else if(intent.type==='duck')game.crouch();}
+    // Sustain a held crouch without replaying its sound on every sample.
+    if(out.posture==='duck'&&game.accepting()&&game.player.grounded&&game.player.slide<.18)game.player.duck();
   }
-
-  function recalibrate(){
-    if(!active)return;
-    signal.recentre();
-    calibrateUntil=performance.now()+2200;
-    report('calibrating');
-  }
-
+  function recalibrate(){if(active){centreAgain();report('calibrating');}}
   function disable(){
+    generation++;bodyReady=false;bodyRunning=false;body.reset();starting=false;active=false;game.awaitingCamera=false;
     if(timer)clearInterval(timer);timer=null;
-    if(stream)for(const track of stream.getTracks())track.stop();
-    stream=null;video.srcObject=null;active=false;streaming=false;signal=null;lastHead=null;
-    report('off');
+    onHeadFromStream(null);closeTracker();
+    if(stream)stream.getTracks().forEach(t=>t.stop());
+    stream=null;video.srcObject=null;streaming=false;signal=null;lastHead=null;report('off');
   }
-
-  return {enable,disable,recalibrate,video,
-    get active(){return active;},get status(){return status;},get streaming(){return streaming;},
-    toggle(){return active?(disable(),false):enable();},
-    dispose(){disable();closeTracker();}};
+  return {enable,disable,recalibrate,video,get mode(){return mode;},get requiresJog(){return mode==='body'&&(active||starting);},get tracked(){return bodyReady&&performance.now()-bodySeen<700;},get running(){return bodyRunning&&performance.now()-bodySeen<700;},async setMode(next){if(!['body','head'].includes(next)||next===mode)return;const restart=active||starting;disable();mode=next;if(restart)await enable();},get active(){return active;},get status(){return status;},get streaming(){return streaming;},toggle(){return active||starting?(disable(),false):enable();},dispose:disable};
 }

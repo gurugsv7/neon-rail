@@ -8,8 +8,7 @@ let template,rampTemplate;
 // TRAIN_ROOF and TRAIN_HALF, so a rover sitting any lower or shorter would stop
 // matching the rules the player is judged against.
 async function fitted(data,name,turn=0){
-  const bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));
-  const gltf=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  const gltf=await new GLTFLoader().loadAsync(data);
   const model=gltf.scene;
   // Meshy's longest axis is X; the runner's rail direction is Z. The extra half
   // turn is for the rover, whose nose was clipped off along with its built-in

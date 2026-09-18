@@ -12,8 +12,7 @@ export const CHARACTER_HEIGHT=2.5;
 const RUN_REFERENCE_SPEED=17;
 let source=null;
 export async function prepareCharacterAsset(){
-  const bytes=Uint8Array.from(atob(kidData),c=>c.charCodeAt(0));
-  source=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  source=await new GLTFLoader().loadAsync(kidData);
 }
 // One character exists at a time, so the loaded scene is used directly rather
 // than cloned -- cloning a skinned mesh needs the skeleton rebuilt to match.
@@ -54,12 +53,14 @@ export function characterModel(){
   }
   // Picks the clip from player state. Ordering is priority: the reactions have
   // to win over the locomotion underneath them.
-  function pose(state,player,power,time,speed,glance){
+  function pose(state,player,power,time,speed,glance,captureTime=0){
     if(state==='menu'){
       // Both dance clips belong to the start screen; they alternate so the menu
       // does not loop one four-second clip forever.
       play(Math.floor(time/9)%2?'danceB':'danceA',{fade:.4});
     }
+    else if(state==='idle'){play('land',{loop:false,hold:true,fade:.2,speed:0});if(currentName==='land')current.time=Math.max(0,current.getClip().duration-.001);}
+    else if(state==='caught')play(captureTime<1.8?'lookBack':captureTime<2.9?'stumble':'fall',{loop:captureTime<1.8,hold:true,fade:.18,speed:captureTime<1.8?.35:.65});
     else if(state==='over')play('stumble',{loop:false,hold:true,fade:.12});
     else if(player.stumble>0)play('stumble',{loop:false,hold:true,fade:.1});
     else if(power.board>0)play('board',{speed:1});

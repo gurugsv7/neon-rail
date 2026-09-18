@@ -3,8 +3,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import treeData from '../assets/meridian-trees.glb';
 const models=new Map();
 export async function prepareTreeAsset(){
-  const bytes=Uint8Array.from(atob(treeData),c=>c.charCodeAt(0));
-  const gltf=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  const gltf=await new GLTFLoader().loadAsync(treeData);
   gltf.scene.updateMatrixWorld(true);
   for(const node of gltf.scene.children){
     const parts=[];

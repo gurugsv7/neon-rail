@@ -64,14 +64,14 @@ async ()=>{
     cx.fillStyle='#26343f'; cx.beginPath(); cx.ellipse(fx,fy-59,r*0.85,r*0.42,0,Math.PI,2*Math.PI); cx.fill();
   };
   const sig=__rail.motionSignal();
-  const g=__rail.game; g.start();
+  const g=__rail.game;g.testClock=true;g.start();__rail.clear();g.player.lane=2;
   let t=performance.now(), lanes=[];
   const one=(fx)=>new Promise(function(done){ drawFace(fx);
       if(!__rail.requestHead(cv,done)) done(null); });
   const feed=async(fx,n)=>{ for(let i=0;i<n;i++){ const head=await one(fx); t+=83;
       if(!head) continue;
       const out=sig.update(head,t); lanes.push(out.lane);
-      for(const it of out.intents) if(it.type==='lane') g.steerTo(it.lane); } };
+      for(const it of out.intents) if(it.type==='lane') g.steer(it.direction); } };
   await __rail.prepareTracker();
   await feed(320,10);                        // calibrate at centre
   const afterCentre=g.player.lane;
@@ -90,19 +90,21 @@ with sync_playwright() as pw:
     page = b.new_page(viewport={'width':1200,'height':800})
     errs=[]; page.on('pageerror', lambda e: errs.append(str(e)))
     reqs=[]; page.on('request', lambda r: reqs.append(r.url))
-    page.goto(Path('outputs/neon-rail/NEON RAIL.html').resolve().as_uri()+'?qa', wait_until='networkidle')
+    page.goto('http://127.0.0.1:8765/NEON%20RAIL.html?qa', wait_until='networkidle')
     page.wait_for_function('!!window.__rail', timeout=60000)
 
+    assert not any('wasm' in r or 'tflite' in r or 'motion-worker' in r for r in reqs), 'Camera resources loaded before camera use'
     det = page.evaluate(DETECT)
     print('face detection:', json.dumps(det), flush=True)
 
     if det.get('detected'):
         steer = page.evaluate(STEER)
         print('steering:', json.dumps(steer), flush=True)
-        good = steer['afterCentre']==1 and steer['afterLeft']==0 and steer['afterRight']==2
-        print(('PASS' if good else 'FAIL'), 'physical left -> lane 0, physical right -> lane 2', flush=True)
+        good = steer['afterCentre']==2 and steer['afterLeft']==1 and steer['afterRight']==2
+        print(('PASS' if good else 'FAIL'), 'right lane -> one left gesture -> middle -> neutral + right gesture -> right', flush=True)
+        assert good
     else:
-        print('SKIP steering test - detector did not fire on the synthetic face', flush=True)
+        raise AssertionError('Detector did not detect synthetic face')
 
     # plumbing: real getUserMedia through the real controller
     page.evaluate("__rail.game.motionControl.enable()")
@@ -111,7 +113,8 @@ with sync_playwright() as pw:
         "({active:__rail.game.motionControl.active,status:__rail.game.motionControl.status})")), flush=True)
     page.evaluate("__rail.game.motionControl.disable()")
 
-    ext=[r for r in reqs if r.startswith('http') or r.startswith('https')]
+    ext=[r for r in reqs if r.startswith('http') and not r.startswith('http://127.0.0.1:8765/')]
     print('external requests:', ext, flush=True)
     print('page errors:', errs[:3], flush=True)
+    assert not errs and not ext
     b.close()

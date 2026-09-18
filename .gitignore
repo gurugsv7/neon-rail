@@ -34,3 +34,11 @@ outputs/neon-rail/assets/mediapipe/
 work/build/models/
 work/build/mp-test/
 work/probe.html
+
+# Build output. Rebuilt by `npm run build`; Vercel builds it on deploy.
+outputs/neon-rail/dist/
+dist/
+
+# Seeded design-canvas payload (2.5 MB); the .dc.html sources next to it are
+# the real material.
+work/design/neon-rail-ui/neon-rail-ui.html

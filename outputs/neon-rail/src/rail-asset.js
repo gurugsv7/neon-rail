@@ -5,8 +5,7 @@ import railData from '../assets/meridian-rails.glb';
 export const RAIL_GAUGE=.35,RAIL_TILE_LENGTH=4,RAIL_TILE_HEIGHT=.1;
 const variants=[];
 export async function prepareRailAsset(){
-  const bytes=Uint8Array.from(atob(railData),c=>c.charCodeAt(0));
-  const gltf=await new GLTFLoader().parseAsync(bytes.buffer,'');
+  const gltf=await new GLTFLoader().loadAsync(railData);
   gltf.scene.updateMatrixWorld(true);
   // The asset stores one node per variant, straight first, damaged second. A
   // multi-primitive mesh arrives as a child per primitive, each keeping the

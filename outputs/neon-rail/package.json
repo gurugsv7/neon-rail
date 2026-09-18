@@ -4,7 +4,17 @@
   "private": true,
   "type": "module",
   "description": "An original, offline, procedural 3D endless runner",
-  "scripts": { "build": "node build.mjs", "test": "node tests/core-tests.mjs" },
-  "dependencies": { "three": "0.185.1" },
-  "devDependencies": { "esbuild": "0.28.2" }
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node tests/core-tests.mjs && node tests/motion-tests.mjs && node tests/body-tests.mjs",
+    "start": "node server.mjs",
+    "dev": "node build.mjs && node server.mjs"
+  },
+  "dependencies": {
+    "three": "0.185.1",
+    "@mediapipe/tasks-vision": "1.0.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
 }
