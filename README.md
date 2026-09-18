@@ -57,14 +57,11 @@ npm run dev
 That builds and serves on <http://127.0.0.1:8765>. On Windows you can
 double-click `PLAY.cmd` instead.
 
-Camera control needs the MediaPipe runtime, which isn't committed:
-
-```bash
-npm run assets:mediapipe
-```
-
-Everything else — models, audio, the renderer — is already in the repo. There
-is no asset server and no account.
+The MediaPipe runtime for camera control isn't committed — it's ~17 MB of
+unmodified upstream files — so the build stages it on the first run, fetching
+the WASM from the npm package and the two models from Google's model host.
+Everything else, models and audio included, is already in the repo. There is no
+asset server and no account.
 
 ```bash
 npm test     # three dependency-free Node suites

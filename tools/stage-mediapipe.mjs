@@ -1,33 +1,53 @@
-// Stages the MediaPipe runtime the motion control needs.
+// Stages the MediaPipe runtime that the camera controls need.
 //
-// These are unmodified upstream files -- the WASM comes from the npm package,
-// the model from Google's model host -- so they are fetched rather than kept in
-// the repo, the same way the Kenney kits and Mixamo FBX are. Run this once
-// before building if outputs/neon-rail/assets/mediapipe is missing:
+// Every file here is an unmodified upstream release -- the WASM ships in the
+// npm package, the two models come from Google's model host -- so they are
+// fetched rather than committed, the same way the Kenney kits are. The build
+// runs this automatically (npm's `prebuild` hook); run it directly with:
 //
-//   npm --prefix work/build install
-//   node work/build/stage-mediapipe.mjs
+//   npm run assets:mediapipe
 //
-// The wasm loader script is copied to a .wasmjs extension on purpose: esbuild
-// must inline it as base64 bytes for a blob URL, not parse it as a module.
-import {copyFileSync,mkdirSync,existsSync,writeFileSync,statSync} from 'node:fs';
-import {resolve} from 'node:path';
+// The WASM loader is copied to a .wasmjs extension on purpose: esbuild has to
+// inline it as base64 bytes for a blob URL, not parse it as a module.
+import {copyFileSync, mkdirSync, existsSync, writeFileSync, statSync} from 'node:fs';
+import {dirname, resolve, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 
-const OUT=resolve('outputs/neon-rail/assets/mediapipe');
-const WASM=resolve('work/build/node_modules/@mediapipe/tasks-vision/wasm');
-const MODEL_URL='https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite';
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const out = join(root, 'assets/mediapipe');
+const wasm = join(root, 'node_modules/@mediapipe/tasks-vision/wasm');
 
-mkdirSync(OUT,{recursive:true});
-if(!existsSync(WASM))throw new Error('@mediapipe/tasks-vision is not installed. Run: npm --prefix work/build install');
+const MODELS = {
+  // Head-only mode.
+  'blaze_face_short_range.tflite':
+    'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite',
+  // Full-body mode. Lite rather than Full: measured at ~20 ms a frame, which
+  // is the budget that leaves the renderer its 60 fps.
+  'pose_landmarker_lite.task':
+    'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/latest/pose_landmarker_lite.task',
+};
 
-copyFileSync(WASM+'/vision_wasm_internal.wasm',OUT+'/vision_wasm_internal.wasm');
-copyFileSync(WASM+'/vision_wasm_internal.js',OUT+'/vision_wasm_internal.wasmjs');
+mkdirSync(out, {recursive: true});
 
-const model=OUT+'/blaze_face_short_range.tflite';
-if(!existsSync(model)){
-  const res=await fetch(MODEL_URL);
-  if(!res.ok)throw new Error(`model download failed: ${res.status} ${res.statusText}`);
-  writeFileSync(model,Buffer.from(await res.arrayBuffer()));
+if (!existsSync(wasm)) {
+  throw new Error('@mediapipe/tasks-vision is not installed. Run: npm install');
 }
-for(const f of ['vision_wasm_internal.wasm','vision_wasm_internal.wasmjs','blaze_face_short_range.tflite'])
-  console.log(String(Math.round(statSync(OUT+'/'+f).size/1024)).padStart(6),'KB ',f);
+for (const [from, to] of [
+  ['vision_wasm_internal.wasm', 'vision_wasm_internal.wasm'],
+  ['vision_wasm_internal.js', 'vision_wasm_internal.wasmjs'],
+]) {
+  const dest = join(out, to);
+  if (!existsSync(dest)) copyFileSync(join(wasm, from), dest);
+}
+
+for (const [name, url] of Object.entries(MODELS)) {
+  const dest = join(out, name);
+  if (existsSync(dest)) continue;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${name}: download failed, ${res.status} ${res.statusText}`);
+  writeFileSync(dest, Buffer.from(await res.arrayBuffer()));
+}
+
+for (const f of ['vision_wasm_internal.wasm', 'vision_wasm_internal.wasmjs', ...Object.keys(MODELS)]) {
+  console.log(String(Math.round(statSync(join(out, f)).size / 1024)).padStart(7), 'KB ', f);
+}

@@ -5,9 +5,10 @@
   "type": "module",
   "description": "A three-lane endless runner in the browser. Three.js, no engine, no network at runtime \u2014 and it plays from your webcam.",
   "scripts": {
+    "prebuild": "node tools/stage-mediapipe.mjs",
     "build": "node build.mjs",
     "start": "node server.mjs",
-    "dev": "node build.mjs && node server.mjs --open",
+    "dev": "npm run build && node server.mjs --open",
     "test": "node tests/core-tests.mjs && node tests/motion-tests.mjs && node tests/body-tests.mjs",
     "assets:mediapipe": "node tools/stage-mediapipe.mjs"
   },
