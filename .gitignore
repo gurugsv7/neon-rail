@@ -32,3 +32,9 @@ outputs/
 # Seeded design-canvas payload; the .dc.html sources beside it are the source
 # of truth and regenerate it.
 docs/design/neon-rail-ui.html
+
+# Launch-video build. The composition stages ~60 MB of working media plus two
+# Microsoft system fonts copied out of C:\Windows\Fonts for the local render --
+# neither belongs in a public repo. The finished brag.mp4 and brag.jpg are the
+# deliverables; commit them deliberately if you want them tracked.
+brag-output/
