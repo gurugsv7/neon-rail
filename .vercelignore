@@ -1,5 +1,7 @@
-# Only src/, assets/ and the build scripts are needed to produce public/.
-tools/
+# Only src/, assets/, the build scripts and the MediaPipe staging step are
+# needed to produce public/. The rest of tools/ is the offline art pipeline.
+tools/*
+!tools/stage-mediapipe.mjs
 tests/
 docs/
 PLAY.cmd
