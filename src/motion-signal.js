@@ -65,9 +65,23 @@ export function previewBox(head,width,height){
 
 export const MOTION_TUNING={
   // Fractions of the scale unit (head width), measured from the calibrated centre.
-  enter:.32,exit:.20,        // entering a lane needs a bigger lean than holding it
-  dwellMs:55,                // two confirmed samples at the active capture rate
-  cooldownMs:130,
+  //
+  // Head steering is POSITIONAL, not gestural: the head has three comfortable
+  // positions and the track has three lanes, so they map one to one. Leaning
+  // left means "be in the left lane", not "step once to the left". That is what
+  // makes crossing two lanes a single movement rather than two separate leans
+  // with a return to centre in between.
+  //
+  // The detector's box is wider than the skull, so an offset of 1.0 here is
+  // already more than a head's real width of travel. 0.19 is a lean you can
+  // hold comfortably; the old 0.32 was most of the way to a shoulder check.
+  enter:.19,exit:.11,        // entering a lane needs a bigger lean than holding it
+  dwellMs:50,                // about one confirmed sample at the capture rate
+  cooldownMs:90,             // two lanes resolve inside ~180 ms
+  // Positional is the head-mode model described above. Full-body steering opts
+  // out: there you are jogging in place, the lean is a deliberate gesture
+  // rather than a posture you hold, and one lean means one lane.
+  positional:true,
   jumpRise:.30,duckDrop:.34, // vertical, same unit
   verticalCooldownMs:420,
   recentre:.006,             // slow drift correction, only while centred
@@ -95,7 +109,7 @@ export function createMotionSignal(tuning={}){
   const fx=new OneEuro(),fy=new OneEuro(2,8,1.5);
   const rawX=[],rawY=[];
   let centre=null,unit=null;            // calibration
-  let armed=true;
+  let armed=true;                       // gestural mode only
   let lane=1,pending=null,pendingSince=0,lastLane=-1e9,lastVertical=-1e9;
   let lastSeen=-Infinity,lastTime=null,offsetX=0,offsetY=0;
   let posture='neutral',verticalPending=null,verticalSince=0,neutralSince=null;
@@ -132,15 +146,20 @@ export function createMotionSignal(tuning={}){
     offsetX=(sx-centre.x)/unit;
     offsetY=(sy-centre.y)/(unit*(sample.aspect||1));
 
-    // Lane: asymmetric thresholds plus a dwell time. Hysteresis alone still
-    // flickers when the underlying signal is noisy, so both are needed.
+    // Lane. Hysteresis keeps the edges from flickering and the dwell keeps a
+    // single noisy frame from committing; past those, the lane just follows the
+    // head. The intent carries the lane it settled on, not a step direction --
+    // the controller closes whatever distance that leaves.
     const want=offsetX<-T.enter?0:offsetX>T.enter?2:
       (lane===0&&offsetX<-T.exit)?0:(lane===2&&offsetX>T.exit)?2:1;
     if(want!==lane){
       if(pending!==want){pending=want;pendingSince=now;}
       else if(now-pendingSince>=T.dwellMs&&now-lastLane>=T.cooldownMs){
         lane=want;lastLane=now;pending=null;
-        if(lane===1)armed=true;
+        if(T.positional)intents.push({type:'lane',lane});
+        // Gestural: a lean fires one step and then has to return to centre
+        // before it can fire again.
+        else if(lane===1)armed=true;
         else if(armed){armed=false;intents.push({type:'lane',direction:lane===0?-1:1,lane});}
       }
     }else pending=null;

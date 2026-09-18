@@ -8,9 +8,11 @@ for(const hz of [12,24,30]){
   h.feed({...centre,x:.5-.16*.55},hz);
   const lane=h.events.find(e=>e.type==='lane');assert.equal(lane.lane,0);
   assert(lane.t-start<=270,`steering too slow at ${hz}Hz`);measurements.push({hz,latencyMs:Math.round(lane.t-start)});
-  const count=h.events.length;h.feed({...centre,x:.5-.16*.55},hz*3);assert.equal(h.events.length,count,'held lean repeated');
-  h.feed(centre,hz);assert.equal(h.events.length,count,'neutral must not move player');
-  h.feed({...centre,x:.5-.16*.55},hz);assert.equal(h.events.length,count+1);assert.equal(h.events.at(-1).direction,-1);
+  const count=h.events.length;h.feed({...centre,x:.5-.16*.55},hz*3);assert.equal(h.events.length,count,'a held lean must not repeat');
+  // Positional, so centring the head is itself an instruction: go back to the
+  // middle lane. The gesture model used to ignore it.
+  h.feed(centre,hz);assert.equal(h.events.at(-1).lane,1,'centring must return to the middle lane');
+  h.feed({...centre,x:.5-.16*.55},hz);assert.equal(h.events.at(-1).lane,0,'leaning again must reach the left lane');
 }
 for(const kind of ['jump','duck']){
   const h=harness();h.feed(centre,24);const pose={...centre,y:.5+(kind==='jump'?-.09:.09)};
@@ -28,10 +30,23 @@ const previous=normaliseHead(face(180,1).boundingBox,640,480);
 const selected=selectHead([face(430,.99),face(185,.8)],640,480,previous);assert(Math.abs(selected.x-previous.x)<.02,'tracker switched to bystander');
 assert.equal(selectHead([face(180,.3)],640,480,null),null);
 const box=previewBox({...previous,height:.25},160,120);assert.equal(box.h,30);
-console.log(JSON.stringify({passed:true,steering:measurements,checks:['noise','single-frame spike','hold and rearm','loss recovery','confidence','face continuity','preview aspect']},null,2));
+console.log(JSON.stringify({passed:true,steering:measurements,checks:['noise','single-frame spike','hold and rearm','loss recovery','confidence','face continuity','preview aspect','two lanes in one lean','gentle lean']},null,2));
 
-const stepper=harness();stepper.feed(centre,24);let playerLane=2;
-stepper.feed({...centre,x:.4},72);for(const e of stepper.events)if(e.type==='lane')playerLane+=e.direction;
-assert.equal(playerLane,1,'one lean from right must stop in middle');stepper.events.length=0;
-stepper.feed({...centre,x:.6},48);assert.equal(stepper.events.length,0,'opposite lean without neutral must not retrigger');
-stepper.feed(centre,24);stepper.feed({...centre,x:.4},48);assert.equal(stepper.events.filter(e=>e.type==='lane').length,1);
+// Crossing two lanes in one lean -- the thing the gesture model could not do,
+// because every step needed its own excursion out to the side and back.
+const cross=harness();cross.feed(centre,24);let player=2;
+const drive=out=>{if(player!==out.lane)player+=Math.sign(out.lane-player);return out;};
+for(let i=0;i<30;i++)drive(cross.feed({...centre,x:.4}));
+assert.equal(player,0,'one lean from the right lane must reach the left lane');
+for(let i=0;i<30;i++)drive(cross.feed(centre));
+assert.equal(player,1,'centring the head must return to the middle lane');
+for(let i=0;i<30;i++)drive(cross.feed({...centre,x:.6}));
+assert.equal(player,2,'leaning the other way must reach the right lane');
+
+// And the lean itself has to be one you can hold. A quarter of a head-width
+// sat under the old 0.32 threshold and did nothing at all.
+const gentle=harness();gentle.feed(centre,24);
+gentle.feed({...centre,x:.5-.16*.25},24);
+const gentleLanes=gentle.events.filter(e=>e.type==='lane');
+assert.equal(gentleLanes.length,1,'a gentle lean must still steer');
+assert.equal(gentleLanes[0].lane,0);

@@ -50,7 +50,13 @@ export function createMotionControl(game,ui){
       report('calibrating');return;
     }
     const out=signal.update(head,now);report('tracking');
-    for(const intent of out.intents){if(intent.type==='lane')game.steer(intent.direction);else if(intent.type==='jump')game.hop();else if(intent.type==='duck')game.crouch();}
+    // Head steering is positional, so drive the player toward the lane the head
+    // is indicating rather than replaying a one-shot step. One lane per sample:
+    // crossing two lanes takes a single lean and lands inside ~180 ms, and a
+    // step the game refused -- mid-stumble, say -- corrects on the next sample
+    // instead of being lost.
+    if(game.accepting()&&game.player.lane!==out.lane)game.steer(Math.sign(out.lane-game.player.lane));
+    for(const intent of out.intents){if(intent.type==='jump')game.hop();else if(intent.type==='duck')game.crouch();}
     // Sustain a held crouch without replaying its sound on every sample.
     if(out.posture==='duck'&&game.accepting()&&game.player.grounded&&game.player.slide<.18)game.player.duck();
   }

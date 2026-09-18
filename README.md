@@ -38,7 +38,9 @@ Press `C`. Two modes:
 - **Full body** — jog in place to move, lean left or right to change lanes,
   raise both hands to jump, squat to slide. Stand still and you stop running,
   which security notices.
-- **Head only** — for seated play. Lean to steer, rise to jump, duck to slide.
+- **Head only** — for seated play. Your head position *is* your lane: lean
+  left to sit in the left lane, centre up to return to the middle. Crossing
+  two lanes is one lean rather than two. Rise to jump, duck to slide.
 
 The tracker wants your head, knees and ankles inside the frame. It calibrates
 on whatever posture you hold still in, so there is no "correct" starting pose,

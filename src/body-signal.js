@@ -17,7 +17,7 @@ export function bodyFrame(points){
 }
 export function createBodySignal(){
   let base=null,hold=null,holdSince=0,lastSeen=-Infinity,lastStep=-Infinity,lastSide=0,steps=[],raised=false,gestureSince=0,gesture=null;
-  const steering=createMotionSignal({enter:.42,exit:.23});
+  const steering=createMotionSignal({enter:.42,exit:.23,positional:false});
   const reset=()=>{base=hold=null;steps=[];lastStep=-Infinity;lastSide=0;raised=false;gesture=null;steering.recentre();};
   function update(points,now){
     const f=bodyFrame(points),intents=[];
