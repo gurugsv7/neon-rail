@@ -1,44 +1,34 @@
-# Dependencies and tool binaries
-work/build/node_modules/
-work/npm-cache/
+node_modules/
 __pycache__/
+.DS_Store
+.vercel/
 
-# Source art. All of it is third-party and re-downloadable, and together it is
-# ~270MB of binaries that would sit in git history forever. The packed results
-# live in outputs/neon-rail/assets and the scripts in work/build rebuild them.
-#   Kenney kits (CC0)            https://kenney.nl/assets
-#   Quaternius stylized trees    https://quaternius.com
-#   Meshy + Mixamo exports       supplied per-project
-work/main character/
-work/kenney_*/
-work/Textured Stylized Trees*/
-work/*.glb
-work/build/fbx-out/
-work/build/viewer/
+# Build output. `npm run build` regenerates all of it, and Vercel builds it on
+# deploy, so none of it belongs in history.
+public/
 
-# Test and screenshot output
-work/*.png
-work/*.log
-work/*.json
-outputs/neon-rail/preview.png
+# The MediaPipe runtime for camera control: every file is either an unmodified
+# upstream release or a build product, so it is fetched rather than stored.
+#   npm run assets:mediapipe
+assets/mediapipe/
 
-# Stale build artifact; the single-file HTML is the deliverable
-outputs/*.zip
+# Inputs to the asset pipeline in tools/. Around 260 MB of third-party binaries
+# that would sit in git history forever; the packed results in assets/ are what
+# the game actually loads, and tools/optimize-*.mjs rebuild them.
+#   Kenney city kits (CC0)      https://kenney.nl/assets
+#   Quaternius trees (CC0)      https://quaternius.com
+#   Meshy and Mixamo exports    generated per-project, see CREDITS.md
+tools/source-art/
+tools/node_modules/
+tools/models/
 
-# MediaPipe runtime for the camera control. All of it is either an unmodified
-# upstream file or a build product, so it is fetched rather than stored:
-#   npm --prefix work/build install
-#   node work/build/stage-mediapipe.mjs
-# (motion-worker.workerjs is emitted by work/build/build.mjs.)
-outputs/neon-rail/assets/mediapipe/
-work/build/models/
-work/build/mp-test/
-work/probe.html
+# Stale scratch directories left over from the pre-restructure layout. They
+# hold only screenshots, logs and one-off check scripts -- everything the asset
+# pipeline still needs was moved to tools/source-art/. Safe to delete:
+#   rm -rf work outputs
+work/
+outputs/
 
-# Build output. Rebuilt by `npm run build`; Vercel builds it on deploy.
-outputs/neon-rail/dist/
-dist/
-
-# Seeded design-canvas payload (2.5 MB); the .dc.html sources next to it are
-# the real material.
-work/design/neon-rail-ui/neon-rail-ui.html
+# Seeded design-canvas payload; the .dc.html sources beside it are the source
+# of truth and regenerate it.
+docs/design/neon-rail-ui.html

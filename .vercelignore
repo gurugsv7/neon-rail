@@ -1,0 +1,6 @@
+# Only src/, assets/ and the build scripts are needed to produce public/.
+tools/
+tests/
+docs/
+PLAY.cmd
+*.md
