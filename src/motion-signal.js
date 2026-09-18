@@ -82,12 +82,22 @@ export const MOTION_TUNING={
   // out: there you are jogging in place, the lean is a deliberate gesture
   // rather than a posture you hold, and one lean means one lane.
   positional:true,
-  jumpRise:.30,duckDrop:.34, // vertical, same unit
-  verticalCooldownMs:420,
+  // Vertical, same unit. The cost of a big threshold is not just the reach --
+  // it is the time the movement takes. Lifting the head 0.3 head-widths is a
+  // deliberate quarter-second of neck travel before the detector has seen
+  // anything, which is most of the reaction budget for an obstacle. Duck stays
+  // above jump because leaning in toward the screen is a posture people fall
+  // into naturally, and it must not read as a slide.
+  jumpRise:.20,duckDrop:.24,
+  verticalCooldownMs:280,
   recentre:.006,             // slow drift correction, only while centred
   lostMs:900,                // how long to coast before declaring tracking lost
-  verticalRelease:.14,
-  verticalDwellMs:45,
+  verticalRelease:.10,       // keeps the same margin under the new triggers
+  verticalDwellMs:32,        // one confirmed sample; median-of-3 handles spikes
+  // A sideways lean rocks the head down a little. With the duck threshold this
+  // low a hard lean would otherwise read as a slide, so a lane change briefly
+  // suppresses the vertical poses.
+  lateralLockoutMs:150,
 };
 
 export function selectHead(detections,width,height,previous){
@@ -106,18 +116,18 @@ export function selectHead(detections,width,height,previous){
 
 export function createMotionSignal(tuning={}){
   const T={...MOTION_TUNING,...tuning};
-  const fx=new OneEuro(),fy=new OneEuro(2,8,1.5);
+  const fx=new OneEuro(),fy=new OneEuro(2.6,8,1.5);
   const rawX=[],rawY=[];
   let centre=null,unit=null;            // calibration
   let armed=true;                       // gestural mode only
   let lane=1,pending=null,pendingSince=0,lastLane=-1e9,lastVertical=-1e9;
-  let lastSeen=-Infinity,lastTime=null,offsetX=0,offsetY=0;
+  let lastSeen=-Infinity,lastTime=null,offsetX=0,offsetY=0,laneMovedAt=-1e9;
   let posture='neutral',verticalPending=null,verticalSince=0,neutralSince=null;
 
   function calibrate(sample){
     centre={x:sample.x,y:sample.y};unit=Math.max(1e-4,sample.unit);
     fx.reset();fy.reset();rawX.length=0;rawY.length=0;
-    lane=1;armed=true;pending=null;offsetX=0;offsetY=0;lastTime=null;
+    lane=1;armed=true;pending=null;offsetX=0;offsetY=0;lastTime=null;laneMovedAt=-1e9;
     lastLane=lastVertical=-1e9;posture='neutral';verticalPending=null;neutralSince=null;
   }
 
@@ -155,7 +165,7 @@ export function createMotionSignal(tuning={}){
     if(want!==lane){
       if(pending!==want){pending=want;pendingSince=now;}
       else if(now-pendingSince>=T.dwellMs&&now-lastLane>=T.cooldownMs){
-        lane=want;lastLane=now;pending=null;
+        lane=want;lastLane=now;pending=null;laneMovedAt=now;
         if(T.positional)intents.push({type:'lane',lane});
         // Gestural: a lean fires one step and then has to return to centre
         // before it can fire again.
@@ -173,7 +183,11 @@ export function createMotionSignal(tuning={}){
     }else{
       neutralSince=null;
       const wantVertical=offsetY<-T.jumpRise?'jump':offsetY>T.duckDrop?'duck':null;
-      if(posture==='neutral'&&wantVertical&&now-lastVertical>=T.verticalCooldownMs){
+      // `pending` covers the tilt on its way in -- the lateral threshold is
+      // crossed before the vertical one, so the dip is suppressed from the
+      // moment a lane change starts, not just once it lands.
+      const steering=pending!==null||now-laneMovedAt<T.lateralLockoutMs;
+      if(posture==='neutral'&&wantVertical&&!steering&&now-lastVertical>=T.verticalCooldownMs){
         if(verticalPending!==wantVertical){verticalPending=wantVertical;verticalSince=now;}
         else if(now-verticalSince>=T.verticalDwellMs){posture=wantVertical;lastVertical=now;verticalPending=null;intents.push({type:posture});}
       }else verticalPending=null;

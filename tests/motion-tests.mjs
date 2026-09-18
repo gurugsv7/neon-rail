@@ -19,6 +19,28 @@ for(const kind of ['jump','duck']){
   h.feed(pose,96);assert.equal(h.events.filter(e=>e.type===kind).length,1,'held pose must fire once');
   h.feed(centre,24);h.feed(pose,24);assert.equal(h.events.filter(e=>e.type===kind).length,2,'neutral must rearm');
 }
+// Vertical reach and latency. In this harness a sample carries no aspect, so
+// one head-width of vertical offset is 0.16 of frame height: the movements
+// below sit above the new thresholds (0.20 rise, 0.24 drop) and under the old
+// ones (0.30 and 0.34), which is exactly the range that used to do nothing.
+const vertical=[];
+for(const [kind,dy] of [['jump',-.040],['duck',.045]]){
+  const h=harness();h.feed(centre,24);const start=h.time;
+  h.feed({...centre,y:.5+dy},24);
+  const fired=h.events.find(e=>e.type===kind);
+  assert(fired,`a modest ${kind} movement must register`);
+  assert(fired.t-start<=210,`${kind} too slow: ${fired.t-start}ms`);
+  vertical.push({kind,reachHeadWidths:+Math.abs(dy/.16).toFixed(2),latencyMs:Math.round(fired.t-start)});
+}
+
+// A hard lean rocks the head down on its way over. That transient must not
+// read as a slide, or steering and sliding fight each other.
+const rock=harness();rock.feed(centre,24);
+for(let i=0;i<4;i++)rock.feed({...centre,x:.5-.16*.55,y:.5+.050});
+rock.feed({...centre,x:.5-.16*.55},24);
+assert.equal(rock.events.filter(e=>e.type==='duck').length,0,'a hard lean must not read as a slide');
+assert(rock.events.some(e=>e.type==='lane'),'the lean must still steer');
+
 const noisy=harness();noisy.feed(centre,24);
 for(let i=0;i<240;i++)noisy.feed({...centre,x:.5+Math.sin(i*1.9)*.008,y:.5+Math.cos(i*2.1)*.006});
 noisy.feed({...centre,x:.1,y:.1});noisy.feed(centre,24);assert.equal(noisy.events.length,0,'noise or spike fired');
@@ -30,7 +52,7 @@ const previous=normaliseHead(face(180,1).boundingBox,640,480);
 const selected=selectHead([face(430,.99),face(185,.8)],640,480,previous);assert(Math.abs(selected.x-previous.x)<.02,'tracker switched to bystander');
 assert.equal(selectHead([face(180,.3)],640,480,null),null);
 const box=previewBox({...previous,height:.25},160,120);assert.equal(box.h,30);
-console.log(JSON.stringify({passed:true,steering:measurements,checks:['noise','single-frame spike','hold and rearm','loss recovery','confidence','face continuity','preview aspect','two lanes in one lean','gentle lean']},null,2));
+console.log(JSON.stringify({passed:true,steering:measurements,vertical,checks:['noise','single-frame spike','hold and rearm','loss recovery','confidence','face continuity','preview aspect','two lanes in one lean','gentle lean','lean is not a slide']},null,2));
 
 // Crossing two lanes in one lean -- the thing the gesture model could not do,
 // because every step needed its own excursion out to the side and back.
