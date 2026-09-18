@@ -9,7 +9,7 @@ game makes **no network requests at all**.
 
 Built on Three.js. No game engine, no framework, ~2,000 lines of source.
 
-**▶ PLAY_URL_PLACEHOLDER**
+**▶ [Play it in your browser](https://neon-rail-gurus-projects-0640c5c1.vercel.app)**  ·  Chrome, Edge or Firefox on desktop
 
 ![The start screen](docs/screenshot-menu.png)
 
